@@ -1,0 +1,361 @@
+@font-face {
+    font-family: 'inconsolata';
+    src: url(Assets/Inconsolata.ttf);
+}
+
+@font-face {
+    font-family: 'roboto';
+    src: url(Assets/Roboto.ttf);
+}
+
+@font-face {
+    font-family: 'anton';
+    src: url(Assets/Anton.ttf);
+}
+
+:root { 
+    --clr-light: #f7f7f7;
+    --clr-white: white;
+    --clr-darkGreen: #4F583D;
+    --clr-green: #85865F;
+    --clr-darkTan: #CEB793;
+    --clr-black: #19191a;
+    --clr-lightTan: #F5EACF;
+    --clr-lightBlue: #8FA6AC;
+    --radius: 0.2rem;
+}
+
+* {
+    margin: 0;
+    box-sizing: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.navbar {
+    background-color: var(--clr-green);
+    width: 3.5%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: fixed;
+}
+
+.navbar-logo {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5rem;
+    font-weight: 800;
+    border: 2px solid white;
+    padding: 5px;
+    color: var(--clr-light);
+}
+
+.navbar-logo:hover {
+    cursor: pointer;
+    color: black;
+}
+
+.navbar.show {
+    width: 45%;
+}
+
+.navbar-opened.hide {
+    display: none;
+}
+
+.navbar-exit-btn.hide {
+    display: none;
+}
+
+.navbar-opened {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-opened .navbar-text {
+    flex-basis: 94%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    color: var(--clr-light);
+    font-family: roboto;
+}
+
+.navbar-opened .navbar-text h1 {
+    margin-bottom: 10%;
+    margin-top: 10%;
+    margin-left: 30%;
+    font-size: 3rem;
+    opacity: 0.8;
+    transition: 150ms ease-in-out;
+}
+
+.navbar-opened .navbar-text h1:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.navbar-opened .navbar-exit{
+    flex-basis: 6%;
+}
+
+.navbar-exit-btn.show {
+    transform: rotate(180deg);
+    scale: 3;
+    opacity: 0.8;
+    color: var(--clr-light);
+    transition: opacity 150ms ease-in-out;
+}
+
+.navbar-exit-btn.show:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.navbar-button {
+    width: 100%;
+    height: 2.5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 0.8;
+    transition: 150ms ease-in-out;
+}
+
+.navbar-button:hover {
+    cursor: pointer;
+    opacity: 1;
+}
+
+.navbar-button div {
+    border-radius: 10px;
+    background-color: var(--clr-light);
+    width: 80%;
+    height: 15%;
+}
+
+.navbar-button:hover div {
+    background-color: black;
+}
+
+.navbar-button.hide {
+    display: none;
+}
+
+.home {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100vh;
+}
+
+.home-image {
+    width: 45%;
+}
+
+.home-image img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.welcome {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: var(--clr-darkTan);
+    width: 55%;
+}
+
+.welcome-top {
+    margin-left: 10%;
+    margin-right: 20%;
+}
+
+.welcome-bottom {
+    margin-left: 10%;
+    margin-top: 5%;
+}
+
+.welcome h1 {
+    font-size: 5rem;
+    padding-bottom: 5%;
+    font-weight: bold;
+    font-family: anton;
+    color: var(--clr-darkGreen);
+}
+
+.welcome h2 {
+    font-weight: normal;
+    line-height: 2.5rem;
+    font-family: roboto;
+    color: var(--clr-black);
+}
+
+.learn-more-btn {
+    background-color: var(--clr-darkGreen);
+    font-size: 1rem;
+    width: 200px;
+    color: var(--clr-light);
+    border-radius: 5px;
+    box-shadow: none;
+    border: none;
+    padding: 5% 20%;
+    font-family: anton;
+    transition: 150ms ease-in-out;
+}
+
+.learn-more-btn:hover {
+    color: var(--clr-black);
+    cursor: pointer;
+}
+
+.process {
+    display: flex;
+    flex-direction: row;
+    margin-left: 3.5%;
+    height: 100vh;
+}
+
+.process-title {
+    background-color: var(--clr-lightTan);
+    width: 55%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.process-image {
+    height: 100%;
+    width: 45%;
+}
+
+.process-image img {
+    object-fit:  cover;
+    width: 100%;
+    height: 100%;
+}
+
+/* ------EXTRA EXAMPLE CONTENT---------
+.ingredients {
+    display: flex;
+    flex-direction: row;
+    margin-left: 3.5%;
+    height: 100vh;
+}
+
+.ingredients-title {
+    background-color: var(--clr-darkTan);
+    width: 55%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ingredients-image {
+    width: 45%;
+    height: 100%;
+}
+
+.ingredients-image img {
+    object-fit:  cover;
+    width: 100%;
+    height: 100%;
+}
+*/
+
+a {
+    all: unset;
+}
+
+@media (max-width: 1510px) {
+    .navbar {
+        width: 4%;
+    }
+
+    .welcome h1 {
+        font-size: 4rem;
+    }
+
+    .welcome h2 {
+        font-size: 1rem;
+    }
+
+    .welcome {
+        width: 35%;
+    }
+
+    .home-image {
+        width: 65%;
+    }
+
+    .navbar-opened .navbar-exit{
+        flex-basis: 10%;
+    }
+
+    .navbar.show {
+        width: 65%;
+    }
+
+}
+
+@media (max-width: 1310px) {
+    .welcome h1 {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 1210px) {
+    .navbar {
+        width: 5%;
+    }
+
+    .welcome h2 {
+        font-size: 1rem;
+    }
+
+    .navbar-opened .navbar-text h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 1000px) {
+    .navbar {
+        width: 7%;
+    }
+
+    .welcome h1 {
+        font-size: 1.5rem;
+    }
+
+    .welcome h2 {
+        font-size: 0.8rem;
+    }
+
+    .navbar-opened .navbar-exit{
+        flex-basis: 15%;
+    }
+}
+
+@media (max-width: 710px) {
+    .navbar {
+        width: 10%;
+    }
+
+    .welcome-bottom button {
+        width: 125px;
+    }
+}

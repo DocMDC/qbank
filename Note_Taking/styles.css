@@ -1,0 +1,142 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: gray;
+}
+
+#parent-container {
+    background-color: white;
+    padding: 5px;
+}
+
+h1 {
+    margin: 0px;
+    text-align: center;
+    font-size: 30px;
+}
+
+h2 {
+    margin: 0px;
+    text-align: center;
+    font-size: 20px;
+    color: green;
+}
+
+#noteInput {
+    width: 99%;
+    margin: 10px 5px;
+    height: 75px;
+    display: flex;
+    justify-content: center;
+}
+
+#btnDiv {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0px;
+}
+
+#btn {
+    background-color: green;
+    color: white;
+    border-radius: 5px;
+}
+
+#btn:hover {
+    color: black;
+    background-color: #82CD47; 
+}
+
+#savedNotes {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: white;
+    margin: 10px 0px;
+    min-height: 560px;
+    padding: 10px;
+}
+
+.new-div {
+    position: relative;
+    border: solid gray;
+    border-radius: 5px;
+    height: 150px;
+    width: 250px;
+    margin: 10px 10px;
+    padding: 10px;
+    white-space: nowrap;
+}
+
+.new-paragraph {
+    font-size: 15px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.new-div-two {
+    position: absolute;
+    bottom: 5px;
+    left: 27%;
+    
+}
+
+.new-button {
+    height: 40px;
+    width: 90px;
+    background-color: #1363DF;
+    color: white;
+    border-radius: 5px;
+    margin: 10px 10px;
+}
+
+.new-button:hover {
+    background-color: black;
+    color: #1363DF;
+}
+
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-container.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal {
+    background-color: #fff;
+    width: 600px;
+    max-width: 100%;
+    padding: 30px 50px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+#modal_button {
+    background-color: #47a386;
+    border: 0;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 14px;
+    padding: 10px 25px;
+}
+
+#modal_button:hover {
+    background-color: black;
+    color: #47a386;
+}
