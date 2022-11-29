@@ -1,0 +1,87 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.open-button {
+    width: 150px;
+    height: 50px;
+    font-size: 2rem;
+    font-family: sans-serif;
+    border-radius: 5px;
+    background-color: #3F0071;
+    color: white;
+    transition: 150ms ease-in-out;
+}
+
+.open-button.hide {
+    display: none;
+}
+
+button:hover {
+    background-color: #FB2576;
+    cursor: pointer;
+}
+
+.modal-parent-container {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.modal-parent-container.hide {
+    display: none;
+}
+
+.modal-container {
+    background-color: #EFF5F5;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    align-items: center;
+    width: 800px;
+    height: 600px;
+    border-radius: 10px;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.modal-container .modal-title {
+    font-size: 3rem;
+    color: black;
+}
+
+.modal-container .modal-content {
+    font-size: 2rem;
+    color: black;
+}
+
+.modal-container .close-button {
+    width: 150px;
+    height: 50px;
+    font-size: 2rem;
+    font-family: sans-serif;
+    border-radius: 5px;
+    background-color: #FB2576;
+    color: black;
+    transition: 150ms ease-in-out;
+}
+
+.modal-container .close-button:hover {
+    color: white;
+    background-color: #3F0071;
+    cursor: pointer;
+}
