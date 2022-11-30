@@ -3,11 +3,11 @@ const modal = document.querySelector('.modal-parent-container')
 const modalBtn = document.querySelector('.close-button')
 
 openBtn.addEventListener('click', () => {
-    openBtn.classList.add('hide')
-    modal.classList.remove('hide')
+    openBtn.classList.toggle('hide')
+    modal.classList.toggle('hide')
 })
 
 modalBtn.addEventListener('click', () => {
-    modal.classList.add('hide')
-    openBtn.classList.remove('hide')
+    modal.classList.toggle('hide')
+    openBtn.classList.toggle('hide')
 })
