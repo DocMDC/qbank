@@ -58,7 +58,7 @@ class Calculator {
     }
 
     updatePreviousDisplay(operation) {
-        previousOperand.innerText = currentOperand.innerText + operation
+        previousOperand.innerText = `${currentOperand.innerText} ${operation}`
         currentOperand.innerText = ''
     }
 }
@@ -75,17 +75,17 @@ allClearBtn.addEventListener('click', () => {
 
 operationBtns.forEach(button => {
     button.addEventListener('click', () => {
-        if (currentOperand.innerText.length <= 0) {
-            return
-        } else {
-            calculator.updatePreviousDisplay(button.innerText)
+        if (currentOperand.innerText.length <= 0) return
+        if (previousOperand.innerText.includes('x') || previousOperand.innerText.includes('+') || previousOperand.innerText.includes('-') || previousOperand.innerText.includes('÷')) {
+            calculator.compute()
         }
+        calculator.updatePreviousDisplay(button.innerText)
     })
 })
 
 numberBtns.forEach(button => {
     button.addEventListener('click', () => {
-        if (button.innerText === '.' && currentOperand.innerText.includes('.') || currentOperand.innerText.length > 10) {
+        if (button.innerText === '.' && currentOperand.innerText.includes('.') || currentOperand.innerText.length > 7) {
             return
         } else {
             calculator.updateCurrentDisplay(button.innerText)
