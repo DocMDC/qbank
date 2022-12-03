@@ -1,9 +1,9 @@
 const canvas = document.querySelector('canvas');
-canvas.width = 64 * 16 //1024;
-canvas.height = 64 * 9 //576;
-
+canvas.width = 64 * 18 
+canvas.height = 64 * 9 
+const playerOneScore = document.querySelector('#player-one-score')
+const playerTwoScore = document.querySelector('#player-two-score')
 const ctx = canvas.getContext('2d');
-
 class Player {
     constructor(x, y, color, width, height, velocity) {
         this.x = x; 
@@ -23,37 +23,25 @@ class Player {
 
     update() {
         this.draw();
-        this.y += this.velocity.y
+        if (this.y + this.velocity.y >= 0 && this.y + this.height + this.velocity.y <= canvas.height) {
+            this.y += this.velocity.y
+        }
     }
 }
-
-class Enemy {
-    constructor(x, y, color, width, height, velocity) {
-        this.x = x; 
-        this.y = y; 
-        this.color = color;
-        this.width = width;
-        this.height = height;
-        this.velocity = velocity
-    }
-
-    draw() {
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height)
-    }
-
-    update() {
-        this.draw();
-    }
-}
-
 class Ball {
     constructor(x, y, color, radius, velocity) {
         this.x = x; 
         this.y = y; 
         this.color = color;
         this.radius = radius;
-        this.velocity = velocity
+        const direction = {
+            x: Math.random() - 0.5 >= 0 ? -1 : 1,
+            y: Math.random() - 0.5 >= 0 ? -1 : 1,
+        }
+        this.velocity = {
+            x: direction.x * 8,
+            y: direction.y * 8
+        }
     }
 
     draw() {
@@ -65,77 +53,124 @@ class Ball {
 
     update() {
         this.draw();
+
+        if (this.y + this.radius >= canvas.height || this.y - this.radius <=0) {
+            this.velocity.y = -this.velocity.y
+        }
+
+        this.x += this.velocity.x
+        this.y += this.velocity.y 
+    }
+}
+class Net {
+    constructor (y) {
+        this.y = y
+    }
+
+    draw() {
+        ctx.fillStyle = 'black'
+        ctx.fillRect(canvas.width / 2, this.y, 2.5, 50)
+    }
+
+    update() {
+        this.draw()
     }
 }
 
-const player = new Player(25, 100, 'blue', 10, 100, 0)
-const enemy = new Enemy(canvas.width - 25, 100, 'red', 10, 100, 0)
-const ball = new Ball(canvas.width / 2, canvas.height / 2, 'green', 20, 0)
+let playerOne = new Player(5, canvas.height / 2 - 50, 'blue', 10, 100, 0)
+let playerTwo = new Player(canvas.width - 15, canvas.height / 2 - 50, 'red', 10, 100, 0)
+let ball = new Ball(canvas.width / 2, canvas.height / 2, 'black', 10, 0)
+let net1 = new Net(0)
+let net2 = new Net(75)
+let net3 = new Net(75 * 2)
+let net4 = new Net(75 * 3)
+let net5 = new Net(75 * 4)
+let net6 = new Net(75 * 5)
+let net7 = new Net(75 * 6)
+let net8 = new Net(75 * 7)
 
-const keys = {
-    w: {
-        pressed: false
-    },
-    s: {
-        pressed: false
-    }
+let scoreOne = 0
+let scoreTwo = 0
+
+function gameOver() {
+    ball = new Ball(canvas.width / 2, canvas.height / 2, 'black', 10, 0)  
+}
+
+function playerOneHasScored() {
+    scoreOne += 1
+    playerOneScore.innerHTML = scoreOne
+}
+
+function playerTwoHasScored() {
+    scoreTwo += 1
+    playerTwoScore.innerHTML = scoreTwo
 }
 
 function animate() {
     requestAnimationFrame(animate)
     ctx.fillStyle = 'white'
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    player.update()
-    enemy.update()
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    playerOne.update()
+    playerTwo.update()
     ball.update()
- 
-    
-    player.velocity.y = 0
-    if (keys.w.pressed && player.y + player.velocity.y >= 0) player.velocity.y = -7
-    else if (keys.s.pressed && player.y + player.height + player.velocity.y <= canvas.height) player.velocity.y = 7
-    
+    net1.update()
+    net2.update()
+    net3.update()
+    net4.update()
+    net5.update()
+    net6.update()
+    net7.update()
+    net8.update()
+
+    //collision detection between ball and players
+    if (ball.y - ball.radius + ball.velocity.y <= playerOne.y + playerOne.height && ball.y + ball.radius + ball.velocity.y >= playerOne.y && ball.x - ball.radius + ball.velocity.x <= playerOne.x + playerOne.width || ball.y - ball.radius + ball.velocity.y <= playerTwo.y + playerTwo.height && ball.y + ball.radius + ball.velocity.y >= playerTwo.y && ball.x + ball.radius + ball.velocity.x >= playerTwo.x) {
+        ball.velocity.x = -ball.velocity.x
+    }
+
+    if (ball.x + ball.radius >= canvas.width) {
+        playerOneHasScored()
+        gameOver()
+    } else if (ball.x - ball.radius <= 0) {
+        playerTwoHasScored()
+        gameOver()
+    }
 }
 
 animate()
 
-/*
-addEventListener('keyup', (e) => {
-    switch (e.key) {
-        case 'w': player.velocity.y = 0
-        break;
-        case 's': player.velocity.y = 0
-        break;
-    }
-})
-
-addEventListener('keydown', (e) => {
-    if (e.key == 'w' && player.y + player.velocity.y >= 0) {
-        player.velocity.y = -7
-    } else if (e.key == 's' && player.y + player.height + player.velocity.y <= canvas.height) {
-        player.velocity.y = 7
-    } else {
-        player.velocity.y = 0
-    }
-}) */
-
-window.addEventListener('keydown', (event) => {
+addEventListener('keydown', (event) => {
+    console.log(event.key)
     switch (event.key) {
         case 'w':
-            keys.w.pressed = true
+            playerOne.velocity.y = -7
             break
         case 's':
-            keys.s.pressed = true
+            playerOne.velocity.y = 7
+            break
+        case 'ArrowUp':
+            playerTwo.velocity.y = -7
+            break
+        case 'ArrowDown':
+            playerTwo.velocity.y = 7
             break
     }
 })
 
-window.addEventListener('keyup', (event) => {
+addEventListener('keyup', (event) => {
+    console.log(event.key)
     switch (event.key) {
         case 'w':
-            keys.w.pressed = false
+            playerOne.velocity.y = 0
             break
         case 's':
-            keys.s.pressed = false
+            playerOne.velocity.y = 0
+            break
+        case 'ArrowUp':
+            playerTwo.velocity.y = 0
+            break
+        case 'ArrowDown':
+            playerTwo.velocity.y = 0
             break
     }
 })
+
