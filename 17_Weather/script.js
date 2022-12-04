@@ -1,6 +1,7 @@
 let weather = {
     apiKey: "df346adacac2f3a770a7886d91ff2cf6"
 }
+
 const searchBar = document.querySelector('.search-bar')
 const cityEl = document.querySelector('.city')
 const currentTempEl = document.querySelector('.current-temp')
@@ -35,26 +36,10 @@ searchBtn.addEventListener('click', () => {
         cityEl.innerText = cityName
         descriptionEl.innerText = description
         currentTempEl.innerText = `${tempMain} ℉`
-        tempLowEl.innerText = tempLow
-        tempHighEl.innerText = tempHigh
-        humidityEl.innerText = humidity
+        tempLowEl.innerText = `${tempLow} ℉`
+        tempHighEl.innerText = `${tempHigh} ℉`
+        humidityEl.innerText = `${humidity}%`
         
         console.log(cityName, description, tempMain, tempLow, tempHigh, humidity)
     }).catch(err => alert('errors: ' + err.message))
 })
-
-
-
-
-
-    //city name = data.name
-    //description = data.weather[0].description
-    //temp = data.main.temp
-    //temp high= data.main.temp_max
-    //temp low= data.main.temp_min
-    //humidity= data.main.humidity
-
-
-
-
-
