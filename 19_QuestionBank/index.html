@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Bank</title>
+    <link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="question-bank-container">
+        <div class="header">
+            <div class="question-tracker">
+                <p>Item: <span>4</span> of <span>40</span></p>
+            </div>
+            <div class="mark-flag-container">
+                <div class="mark-flag">
+                    <input type="checkbox">
+                    <div class="flag-container">
+                        <img src="Assets/flag.png" alt="flag"/>
+                    </div>
+                    <p>Mark</p>
+                </div>
+            </div>
+            <div class="previous-and-next-buttons">
+                <div class="previous-container">
+                    <div class="previous-image-container">
+                        <img src="Assets/backArrow.png" alt="previous-arrow">
+                    </div>
+                    <p>Previous</p>
+                </div>
+                <div class="next-container">
+                    <div class="next-image-container">
+                        <img src="Assets/backArrow.png" alt="next-arrow">
+                    </div>
+                    <p>Next</p>
+                </div>
+            </div>
+            <div class="test-aids">
+                <div class="lab-container">
+                    <div class="lab-image-container">
+                        <img src="Assets/lab.png" alt="lab-values-icon">
+                    </div>
+                    <p>Lab Values</p>
+                </div>
+                <div class="notes-container">
+                    <div class="notes-image-container">
+                        <img src="Assets/notes.png" alt="notes-icon">
+                    </div>
+                    <p>Notes</p>
+                </div>
+                <div class="calculator-container">
+                    <div class="calculator-image-container">
+                        <img src="Assets/calculator.png" alt="calculator-icon">
+                    </div>
+                    <p>Calculator</p>
+                </div>
+                <div class="reverse-container">
+                    <div class="reverse-image-container">
+                        <img src="Assets/reverseColor.png" alt="reverse-color-icon">
+                    </div>
+                    <p>Reverse Color</p>
+                </div>
+                <div class="textZoom-container">
+                    <div class="letters-container">
+                        <span class="small-font">A</span>
+                        <div class="verticle-line-one"></div>
+                        <span class="medium-font">A</span>
+                        <div class="verticle-line-two"></div>
+                        <span class="large-font">A</span>
+                    </div>
+                    <p>Text Zoom</p>
+                </div>
+            </div>
+        </div>
+        <div class="question-nav-container">
+            <div class="question-number">
+                <span>&#x2022</span>
+                <span>1</span>
+                <div class="question-number-flag-container">
+                    <img src="Assets/blackFlag.png" alt="flag-image">
+                </div>
+            </div>
+            <div class="question-number">
+                <span>&#x2022</span>
+                <span>2</span>
+                <div class="question-number-flag-container">
+                    <img src="Assets/blackFlag.png" alt="flag-image">
+                </div>
+            </div>
+            <div class="question-number">
+                <span>&#x2022</span>
+                <span>3</span>
+                <div class="question-number-flag-container">
+                    <img src="Assets/blackFlag.png" alt="flag-image">
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="time">
+                <p>Block Time Remaining: <span>untimed</span></p>
+            </div>
+            <div class="lock">
+                <div class="lock-img-container">
+                    <img src="Assets/lock.png" alt="lock-icon">
+                </div>
+                <p>Lock</p>
+            </div>
+            <div class="stop">
+                <div class="stop-img-container">
+                    <img src="Assets/hexagon.png" alt="stop-icon">
+                </div>
+                <p>End Block</p>
+            </div>
+        </div>
+        <div class="question-answer-content">
+            <div class="question-vignette">
+                <p>A 57-year-old male is brought to the emergency department by his wife with shortness of breath that started 4 hours ago. Associated symptoms include a worsening cough. The patient has a past medical history of chronic obstructive pulmonary disease. He continues to smoke 1 pack per day for the past 30 years. His temperature is 99.3 F (37.4 C), pulse is 111/min, respirations are 22, blood pressure is 129/83 mmHg, and O2 saturation is 86%. Physical examination reveals respiratory distress, prolonged expiratory phase of respiration, and diffuse wheezing. Which of the following methods of cellular transport occurs in the lungs when oxygen and carbon monoxide are exchanged? </p>
+            </div>
+            <form class="question-choices-form">
+                <ul>
+                    <input id="question-one-input" type="radio" name="question">
+                    <span>
+                        A. 
+                        <div class="question-one-answer question-answer-choice">Simple Diffusion</div>
+                    </span>
+                </ul>
+                <ul>
+                    <input id="question-two-input" type="radio" name="question">
+                    <span>
+                        B. 
+                        <div class="question-two-answer question-answer-choice">Facilitated Diffusion</div>
+                    </span>
+                </ul>
+                <ul>
+                    <input id="question-three-input" type="radio" name="question">
+                    <span>
+                        C. 
+                        <div class="question-three-answer question-answer-choice">Primary Active Transport</div>
+                    </span>
+                </ul>
+                <ul>
+                    <input id="question-four-input" type="radio" name="question">
+                    <span>
+                        D. 
+                        <div class="question-four-answer question-answer-choice">Secondary Active Transport</div>
+                    </span>
+                </ul>
+            </form>
+            <div class="question-button">
+                <button>Proceed to Next Item</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
