@@ -7,18 +7,17 @@
     <title>Question Bank</title>
     <link rel="stylesheet" href="styles.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <script src="script.js" defer></script>
 </head>
 <body>
     <div class="question-bank-container">
         <div class="header">
             <div class="question-tracker">
-                <p>Item: <span>4</span> of <span>40</span></p>
+                <p>Item: <span>1</span> of <span>40</span></p>
             </div>
             <div class="mark-flag-container">
                 <div class="mark-flag">
-                    <input type="checkbox">
+                    <input type="checkbox" class="flag-checkbox-input">
                     <div class="flag-container">
                         <img src="Assets/flag.png" alt="flag"/>
                     </div>
@@ -30,9 +29,9 @@
                     <div class="previous-image-container">
                         <img src="Assets/backArrow.png" alt="previous-arrow">
                     </div>
-                    <p>Previous</p>
+                    <p class="previous-button">Previous</p>
                 </div>
-                <div class="next-container">
+                <div class="next-container next-button">
                     <div class="next-image-container">
                         <img src="Assets/backArrow.png" alt="next-arrow">
                     </div>
@@ -118,40 +117,124 @@
         </div>
         <div class="question-answer-content">
             <div class="question-vignette">
-                <p>A 57-year-old male is brought to the emergency department by his wife with shortness of breath that started 4 hours ago. Associated symptoms include a worsening cough. The patient has a past medical history of chronic obstructive pulmonary disease. He continues to smoke 1 pack per day for the past 30 years. His temperature is 99.3 F (37.4 C), pulse is 111/min, respirations are 22, blood pressure is 129/83 mmHg, and O2 saturation is 86%. Physical examination reveals respiratory distress, prolonged expiratory phase of respiration, and diffuse wheezing. Which of the following methods of cellular transport occurs in the lungs when oxygen and carbon monoxide are exchanged? </p>
-            </div>
+                <!-- <p>A 57-year-old male is brought to the emergency department by his wife with shortness of breath that started 4 hours ago. Associated symptoms include a worsening cough. The patient has a past medical history of chronic obstructive pulmonary disease. He continues to smoke 1 pack per day for the past 30 years. His temperature is 99.3 F (37.4 C), pulse is 111/min, respirations are 22, blood pressure is 129/83 mmHg, and O2 saturation is 86%. Physical examination reveals respiratory distress, prolonged expiratory phase of respiration, and diffuse wheezing. Which of the following methods of cellular transport occurs in the lungs when oxygen and carbon monoxide are exchanged? </p>
+                <div class="question-vignette-image-container">
+                    <img src="Assets/testQuestion.png" alt="test-question-image">
+                </div> -->
+            </div> 
             <form class="question-choices-form">
-                <ul>
-                    <input id="question-one-input" type="radio" name="question">
-                    <span>
-                        A. 
-                        <div class="question-one-answer question-answer-choice">Simple Diffusion</div>
-                    </span>
-                </ul>
-                <ul>
-                    <input id="question-two-input" type="radio" name="question">
-                    <span>
-                        B. 
-                        <div class="question-two-answer question-answer-choice">Facilitated Diffusion</div>
-                    </span>
-                </ul>
-                <ul>
-                    <input id="question-three-input" type="radio" name="question">
-                    <span>
-                        C. 
-                        <div class="question-three-answer question-answer-choice">Primary Active Transport</div>
-                    </span>
-                </ul>
-                <ul>
-                    <input id="question-four-input" type="radio" name="question">
-                    <span>
-                        D. 
-                        <div class="question-four-answer question-answer-choice">Secondary Active Transport</div>
-                    </span>
-                </ul>
+                <div class="question-choices-no-button">
+                    <!--<ul>
+                        <input id="question-one-input" type="radio" name="question">
+                        <span>
+                            A. 
+                            <div class="question-one-answer question-answer-choice">Simple Diffusion</div>
+                        </span>
+                    </ul>
+                    <ul>
+                        <input id="question-two-input" type="radio" name="question">
+                        <span>
+                            B. 
+                            <div class="question-two-answer question-answer-choice">Facilitated Diffusion</div>
+                        </span>
+                    </ul>
+                    <ul>
+                        <input id="question-three-input" type="radio" name="question">
+                        <span>
+                            C. 
+                            <div class="question-three-answer question-answer-choice">Primary Active Transport</div>
+                        </span>
+                    </ul>
+                    <ul>
+                        <input id="question-four-input" type="radio" name="question">
+                        <span>
+                            D. 
+                            <div class="question-four-answer question-answer-choice">Secondary Active Transport</div>
+                        </span>
+                    </ul> -->
+                </div>
+                <button class="show-answer-button">Show Answer</button>
             </form>
-            <div class="question-button">
-                <button>Proceed to Next Item</button>
+            <div class="brief-explanation-container hide">
+                <div class="statistics">
+                    <div class="statistics-incorrect">
+                        <h4>Incorrect</h4>
+                        <p>Correct answer</p>
+                        <span>A</span>
+                    </div>
+                    <div class="statistics-percentage-correct">
+                        <div>
+                            <span class="material-symbols-outlined">
+                                equalizer
+                            </span>
+                        </div>
+                        <div>
+                            <span>74%</span>
+                            <p>Answered correctly</p>
+                        </div>
+                    </div>
+                    <div class="statistics-time-spent">
+                        <div>
+                            <span class="material-symbols-outlined">
+                                schedule
+                            </span>
+                        </div>
+                        <div>
+                            <span>01 min, 48 secs</span>
+                            <p>Time Spent</p>
+                        </div>
+                    </div>
+                    <div class="statistics-version-display">
+                        <div>
+                            <span class="material-symbols-outlined">
+                                calendar_month
+                            </span>
+                        </div>
+                        <div>
+                            <span>2022</span>
+                            <p>Version</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="proceed-button">
+                <button class="next-button">Proceed to Next Item</button>
+            </div>
+        </div>
+        <div class="explanation-content-container hide">
+            <div class="explanation-tab-welcome">
+                <div class="explanation-tab">
+                    <h3>Explanation</h3>
+                </div>
+                <div class="explanation-tab-line"></div>
+            </div>
+            <div class="explanation-content">
+                <div class="explanation-image-container">
+                    <img src="Assets/answerImage.png" alt="explanation-image">
+                </div>
+                <div class="explanation-content-text">
+                    <p>The patient in the vignette shows classic signs and symptoms of acute exacerbation of chronic obstructive pulmonary disease. Typical presentation includes increased dyspnea, increased cough frequency or severity, and sputum production. Diagnostic workup may include a chest x-ray which would reveal hyperinflation and arterial blood gas which would reveal hypoxia and CO2 retention. In the lungs, alveoli exchange inhaled O2 for CO2 from capillaries. The exchange of both of these goes from a high concentration to a low concentration <strong>(Choice A)</strong>. Thus, the transport of O2 and CO2 cannot be an example of active transport. Only transport from low to high concentration requires active transport or the use of energy in the form of ATP. In general, it is important to remember the list of these 4 molecules that undergo simple diffusion: O2, CO2, lipids, and steroids.</p><br>
+                    <p><strong>(Choice B)</strong> Facilitated diffusion, although similar to simple diffusion in that it involves the transport of a molecule along its concentration gradient, has an important difference. Facilitated diffusion involves the use of a transporter or channel whereas in simple diffusion, molecules move freely across the cell membrane without the help of any proteins.</p><br>
+                    <p><strong>(Choice C)</strong> Primary active transport is one form of active transport. This means that it involves the transport of a molecule from low concentration to high concentration; something that is not energetically favorable. Therefore, energy in the form of ATP is utilized to push the molecule into the already crowded area.</p><br>
+                    <p><strong>(Choice D)</strong> Secondary active transport must be distinguished from primary active transport. As another form of active transport, secondary active transport also involves the transport of a molecule against its concentration gradient. With that said, secondary active transport occurs as a result of the actions of primary active transport. For example, primary active transport can result in a sodium gradient. This sodium gradient can be used by another molecule, such as glucose, to help it flow against its concentration gradient. Since the ATP was not used directly in the transferring of the glucose in this situation, it would be an example of secondary active transport.</p>
+                </div>
+                <div class="explanation-reference">
+                    <div>
+                        <span>Physiology</span>
+                        <p>Subject</p>
+                    </div>
+                    <div>
+                        <span>General Principles</span>
+                        <p>Chapter</p>
+                    </div>
+                    <div>
+                        <span>1</span>
+                        <p>Section</p>
+                    </div>
+                </div>
+                <div class="copyright-info">
+                    <p>Copywright &#169; Physeo. All rights reserved.</p>
+                </div>
             </div>
         </div>
     </div>
