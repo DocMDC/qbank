@@ -87,6 +87,8 @@ const preloader = document.querySelector('.preloader')
 const currentItemQuestionNumber = document.querySelector('.current-item-question-number')
 const totalItemQuestionNumber = document.querySelector('.total-item-question-number')
 const navParent = document.querySelector('.question-nav-container')
+const questionInputs = document.querySelectorAll('.question-inputs')
+
 
 
 let selectedQuestions = {
@@ -98,6 +100,13 @@ class QuestionBank {
 
     }
 
+    htmlToElement(html) {
+        let template = document.createElement('template')
+        html = html.trim()
+        template.innerHTML = html
+        return template.content
+    } 
+
     displayQuestionWithImage(arrayOfQuestions) {
         let showQuestion = `
             <p>${arrayOfQuestions[currentQuestionIndex].question} </p>
@@ -105,28 +114,28 @@ class QuestionBank {
                 <img src=${arrayOfQuestions[currentQuestionIndex].image} alt="test-question-image">
             </div>`
         let answerChoices = `<ul>
-        <input id="question-one-input" type="radio" name="question">
+        <input id="question-one-input" class="question-inputs" type="radio" name="question">
         <span>
             A. 
             <div class="question-one-answer question-answer-choice">${arrayOfQuestions[currentQuestionIndex].choices[0]}</div>
         </span>
     </ul>
     <ul>
-        <input id="question-two-input" type="radio" name="question">
+        <input id="question-two-input" class="question-inputs" type="radio" name="question">
         <span>
             B. 
             <div class="question-two-answer question-answer-choice">${arrayOfQuestions[currentQuestionIndex].choices[1]}</div>
         </span>
     </ul>
     <ul>
-        <input id="question-three-input" type="radio" name="question">
+        <input id="question-three-input" class="question-inputs" type="radio" name="question">
         <span>
             C. 
             <div class="question-three-answer question-answer-choice">${arrayOfQuestions[currentQuestionIndex].choices[2]}</div>
         </span>
     </ul>
     <ul>
-        <input id="question-four-input" type="radio" name="question">
+        <input id="question-four-input" class="question-inputs" type="radio" name="question">
         <span>
             D. 
             <div class="question-four-answer question-answer-choice">${arrayOfQuestions[currentQuestionIndex].choices[3]}</div>
@@ -134,34 +143,37 @@ class QuestionBank {
     </ul>`
         questionVignette.innerHTML = showQuestion
         questionChoicesNoButton.innerHTML = answerChoices
+        let answerChoicesEl = this.htmlToElement(answerChoices)
+        let questionInputs = answerChoicesEl.querySelectorAll('.question-inputs')
+        console.log(questionInputs)
     } 
 
     displayQuestionWithoutImage(arrayOfQuestions) {
         let showQuestion = `
             <p>${arrayOfQuestions[currentQuestionIndex].question} </p>`
         let answerChoices = `<ul>
-        <input id="question-one-input" type="radio" name="question">
+        <input id="question-one-input" class="question-inputs" type="radio" name="question">
         <span>
             A. 
             <div class="question-one-answer question-answer-choice">${arrayOfQuestions[currentQuestionIndex].choices[0]}</div>
         </span>
     </ul>
     <ul>
-        <input id="question-two-input" type="radio" name="question">
+        <input id="question-two-input" class="question-inputs" type="radio" name="question">
         <span>
             B. 
             <div class="question-two-answer question-answer-choice">${arrayOfQuestions[currentQuestionIndex].choices[1]}</div>
         </span>
     </ul>
     <ul>
-        <input id="question-three-input" type="radio" name="question">
+        <input id="question-three-input" class="question-inputs" type="radio" name="question">
         <span>
             C. 
             <div class="question-three-answer question-answer-choice">${arrayOfQuestions[currentQuestionIndex].choices[2]}</div>
         </span>
     </ul>
     <ul>
-        <input id="question-four-input" type="radio" name="question">
+        <input id="question-four-input" class="question-inputs" type="radio" name="question">
         <span>
             D. 
             <div class="question-four-answer question-answer-choice">${arrayOfQuestions[currentQuestionIndex].choices[3]}</div>
@@ -169,6 +181,10 @@ class QuestionBank {
     </ul>`
         questionVignette.innerHTML = showQuestion
         questionChoicesNoButton.innerHTML = answerChoices
+        this.htmlToElement(answerChoices)
+        let answerChoicesEl = this.htmlToElement(answerChoices)
+        answerChoicesEl.querySelectorAll('.question-inputs')
+        console.log(answerChoicesEl)
     } 
 }
 
@@ -216,6 +232,13 @@ nextBtns.forEach(button => {
         } else {
             qbank.displayQuestionWithImage(questionsArray)
         }
+
+         //update flag checkbox radio input in header if applicable
+        if (navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
+            flagCheckboxInput.checked = false
+        } else if (!navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
+            flagCheckboxInput.checked = true
+        }
     })
 })
 
@@ -229,7 +252,6 @@ previousBtn.addEventListener('click', () => {
     if (previousQuestionIndex <= 0) {
         previousQuestionIndex = 0
     }
-    console.log(previousQuestionIndex)
 
     currentItemQuestionNumber.innerHTML = currentQuestionIndex + 1
 
@@ -253,6 +275,14 @@ previousBtn.addEventListener('click', () => {
     } else {
         qbank.displayQuestionWithImage(questionsArray)
     }
+
+     //update flag checkbox radio input in header if applicable
+    if (navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
+        flagCheckboxInput.checked = false
+    } else if (!navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
+        flagCheckboxInput.checked = true
+    }
+    
 })
 
 //select any question
@@ -263,28 +293,39 @@ previousBtn.addEventListener('click', () => {
             
             let targetNumber = parseInt(e.target.dataset.number)
             currentQuestionIndex = targetNumber - 1
-            console.log(currentQuestionIndex)
 
             //highlight current nav item
             navParent.children[currentQuestionIndex].style.backgroundColor = '#004975'
             navParent.children[currentQuestionIndex].style.color = 'white'
 
             //remove styling for previous nav item
-            if ((previousQuestionIndex + 1) % 2 == 0) {
+            if ((previousQuestionIndex + 1) % 2 == 0 && previousQuestionIndex !== currentQuestionIndex) {
                 navParent.children[previousQuestionIndex].style.backgroundColor = 'white'
                 navParent.children[previousQuestionIndex].style.color = 'black'
-            } else {
+            } else if ((previousQuestionIndex + 1) % 2 !== 0 && previousQuestionIndex !== currentQuestionIndex) {
                 navParent.children[previousQuestionIndex].style.backgroundColor = '#e2e2e2'
                 navParent.children[previousQuestionIndex].style.color = 'black'
+            } else {
+                return
             }
 
+            //display question corresponding to current nav item
             if (questionsArray[currentQuestionIndex].image == null) {
                 qbank.displayQuestionWithoutImage(questionsArray)
             } else {
                 qbank.displayQuestionWithImage(questionsArray)
             }
 
+            //update the displayed current question in the header
             currentItemQuestionNumber.innerHTML = currentQuestionIndex + 1
+
+            //update flag checkbox radio input in header if applicable
+            if (navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
+                flagCheckboxInput.checked = false
+            } else if (!navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
+                flagCheckboxInput.checked = true
+            }
+
         })
     }
 
@@ -292,8 +333,16 @@ previousBtn.addEventListener('click', () => {
 markFlagContainer.addEventListener('click', () => {
     if (flagCheckboxInput.checked == true) {
         flagCheckboxInput.checked = false
+        
+        //update check mark in nav
+        navParent.children[currentQuestionIndex].children[2].classList.toggle('hide')
+
     } else {
+        //update check mark in header
         flagCheckboxInput.checked = true
+
+        //update check mark in nav
+        navParent.children[currentQuestionIndex].children[2].classList.toggle('hide')
     }
 })
 
