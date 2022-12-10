@@ -137,10 +137,6 @@ class QuestionBank {
         questionVignette.innerHTML = showQuestion
         questionChoicesNoButton.innerHTML = answerChoices
         this.qbankArray.push(questionChoicesNoButton)
-
-        /* let answerChoicesEl = this.htmlToElement(answerChoices)
-        let questionInputs = answerChoicesEl.querySelectorAll('.question-inputs')
-        console.log(questionInputs) */
     } 
 
     displayQuestionWithoutImage(arrayOfQuestions) {
@@ -192,26 +188,33 @@ window.addEventListener('load', () => {
 let currentQuestionIndex = 0
 let previousQuestionIndex 
 
-let firstQuestionAnswerChoicesArray = []
+//array containing answer choice inputs that user has seen
+let questionAnswerChoicesArray = []
 
-function initQuestions() {
+function storeFirstAnswerChoices() {
     let questionInputs = qbank.qbankArray[0].querySelectorAll('.question-inputs')
     questionInputs.forEach(el => {
-        firstQuestionAnswerChoicesArray.push(el)
+        questionAnswerChoicesArray.push(el)
     })
-    /*questionInputs.forEach(el => {
-        el.addEventListener('click', (e) => {
-            console.log(e.target)
-            console.log(currentQuestionIndex)
-        })
-    }) */
+}
+
+//update questionAnswerChoicesArray once user sees corresponding question choices
+function checkBeforeStoring() {
+    let questionInputs = qbank.qbankArray[0].querySelectorAll('.question-inputs')
+    let arrayValuesOne = []
+    questionAnswerChoicesArray.forEach(el => {
+        arrayValuesOne.push(el.value)
+    })
+    questionInputs.forEach(input => {
+        if (!arrayValuesOne.includes(input.value)) {
+            questionAnswerChoicesArray.push(input)
+        }
+    })
 }
 
 qbank.displayQuestionWithImage(questionsArray, setTimeout(() => {
-    initQuestions()
+    storeFirstAnswerChoices()
 }, 300)) 
-
-
 
 //move to next question 
 nextBtns.forEach(button => {
@@ -237,7 +240,6 @@ nextBtns.forEach(button => {
             navParent.children[previousQuestionIndex].style.color = 'black'
         }
            
-
         if (questionsArray[currentQuestionIndex].image == null) {
             qbank.displayQuestionWithoutImage(questionsArray)
         } else {
@@ -250,21 +252,17 @@ nextBtns.forEach(button => {
         } else if (!navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
             flagCheckboxInput.checked = true
         }
+        
 
-        qbank.qbankArray[0].forEach(el => {
+        checkBeforeStoring()
+        console.log(questionAnswerChoicesArray)
+
+        //check if user has selected radio input; if yes, store item in session storage
+        questionAnswerChoicesArray.forEach(el => {
             if (el.checked == true) {
                 sessionStorage.setItem(`${currentQuestionIndex - 1}`, el.value)
             }
         })
-        
-        //console.log(currentQuestionIndex)
-
-        let questionInputs = qbank.qbankArray[0].querySelectorAll('.question-inputs')
-        /*
-        questionInputs.forEach(el => {
-            console.log(el)
-        }) */
-        //console.log(questionInputs)
     })
 })
 
@@ -308,6 +306,9 @@ previousBtn.addEventListener('click', () => {
     } else if (!navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
         flagCheckboxInput.checked = true
     }
+
+    checkBeforeStoring()
+    //console.log(questionAnswerChoicesArray)
 
     //check session storage to display saved results if applicable
             for (let i = 0; i < sessionStorage.length; i++) {
@@ -367,6 +368,9 @@ previousBtn.addEventListener('click', () => {
             } else if (!navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
                 flagCheckboxInput.checked = true
             }
+
+            checkBeforeStoring()
+            //console.log(questionAnswerChoicesArray)
 
             //check session storage to display saved results if applicable
             for (let i = 0; i < sessionStorage.length; i++) {
