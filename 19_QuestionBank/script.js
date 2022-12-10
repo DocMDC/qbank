@@ -199,11 +199,12 @@ function initQuestions() {
     questionInputs.forEach(el => {
         firstQuestionAnswerChoicesArray.push(el)
     })
-    questionInputs.forEach(el => {
+    /*questionInputs.forEach(el => {
         el.addEventListener('click', (e) => {
             console.log(e.target)
+            console.log(currentQuestionIndex)
         })
-    })
+    }) */
 }
 
 qbank.displayQuestionWithImage(questionsArray, setTimeout(() => {
@@ -250,18 +251,19 @@ nextBtns.forEach(button => {
             flagCheckboxInput.checked = true
         }
 
-        
-        firstQuestionAnswerChoicesArray.forEach(el => {
+        qbank.qbankArray[0].forEach(el => {
             if (el.checked == true) {
-                sessionStorage.setItem('questionOne', el.value)
+                sessionStorage.setItem(`${currentQuestionIndex - 1}`, el.value)
             }
         })
+        
+        //console.log(currentQuestionIndex)
 
-        console.log(qbank.qbankArray)
         let questionInputs = qbank.qbankArray[0].querySelectorAll('.question-inputs')
+        /*
         questionInputs.forEach(el => {
             console.log(el)
-        })
+        }) */
         //console.log(questionInputs)
     })
 })
@@ -306,6 +308,22 @@ previousBtn.addEventListener('click', () => {
     } else if (!navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
         flagCheckboxInput.checked = true
     }
+
+    //check session storage to display saved results if applicable
+            for (let i = 0; i < sessionStorage.length; i++) {
+                let sessionStorageKey = sessionStorage.key(i)
+                let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
+
+                //if user already selected a choice, save that choice in session storage
+                if (sessionStorageKey == currentQuestionIndex) {
+                    let questionInputs = qbank.qbankArray[0].querySelectorAll('.question-inputs')
+                    questionInputs.forEach(input => {
+                        if (sessionStorageValue == input.value) {
+                            input.setAttribute('checked', true)
+                        }
+                    })
+                }
+            }
     
 })
 
@@ -350,6 +368,21 @@ previousBtn.addEventListener('click', () => {
                 flagCheckboxInput.checked = true
             }
 
+            //check session storage to display saved results if applicable
+            for (let i = 0; i < sessionStorage.length; i++) {
+                let sessionStorageKey = sessionStorage.key(i)
+                let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
+
+                //if user already selected a choice, save that choice in session storage
+                if (sessionStorageKey == currentQuestionIndex) {
+                    let questionInputs = qbank.qbankArray[0].querySelectorAll('.question-inputs')
+                    questionInputs.forEach(input => {
+                        if (sessionStorageValue == input.value) {
+                            input.setAttribute('checked', true)
+                        }
+                    })
+                }
+            }
         })
     }
 
