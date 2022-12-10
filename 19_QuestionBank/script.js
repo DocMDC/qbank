@@ -87,9 +87,7 @@ const preloader = document.querySelector('.preloader')
 const currentItemQuestionNumber = document.querySelector('.current-item-question-number')
 const totalItemQuestionNumber = document.querySelector('.total-item-question-number')
 const navParent = document.querySelector('.question-nav-container')
-const questionInputs = document.querySelectorAll('.question-inputs')
-
-
+const questionChoicesNoBtn = document.querySelector('.question-choices-no-button')
 
 let selectedQuestions = {
     number: [] 
@@ -100,12 +98,7 @@ class QuestionBank {
 
     }
 
-    htmlToElement(html) {
-        let template = document.createElement('template')
-        html = html.trim()
-        template.innerHTML = html
-        return template.content
-    } 
+    qbankArray = []
 
     displayQuestionWithImage(arrayOfQuestions) {
         let showQuestion = `
@@ -114,28 +107,28 @@ class QuestionBank {
                 <img src=${arrayOfQuestions[currentQuestionIndex].image} alt="test-question-image">
             </div>`
         let answerChoices = `<ul>
-        <input id="question-one-input" class="question-inputs" type="radio" name="question">
+        <input id="question-one-input" class="question-inputs" type="radio" name="question" value="${arrayOfQuestions[currentQuestionIndex].choices[0]}">
         <span>
             A. 
             <div class="question-one-answer question-answer-choice">${arrayOfQuestions[currentQuestionIndex].choices[0]}</div>
         </span>
     </ul>
     <ul>
-        <input id="question-two-input" class="question-inputs" type="radio" name="question">
+        <input id="question-two-input" class="question-inputs" type="radio" name="question" value="${arrayOfQuestions[currentQuestionIndex].choices[1]}">
         <span>
             B. 
             <div class="question-two-answer question-answer-choice">${arrayOfQuestions[currentQuestionIndex].choices[1]}</div>
         </span>
     </ul>
     <ul>
-        <input id="question-three-input" class="question-inputs" type="radio" name="question">
+        <input id="question-three-input" class="question-inputs" type="radio" name="question" value="${arrayOfQuestions[currentQuestionIndex].choices[2]}">
         <span>
             C. 
             <div class="question-three-answer question-answer-choice">${arrayOfQuestions[currentQuestionIndex].choices[2]}</div>
         </span>
     </ul>
     <ul>
-        <input id="question-four-input" class="question-inputs" type="radio" name="question">
+        <input id="question-four-input" class="question-inputs" type="radio" name="question" value="${arrayOfQuestions[currentQuestionIndex].choices[3]}">
         <span>
             D. 
             <div class="question-four-answer question-answer-choice">${arrayOfQuestions[currentQuestionIndex].choices[3]}</div>
@@ -143,37 +136,39 @@ class QuestionBank {
     </ul>`
         questionVignette.innerHTML = showQuestion
         questionChoicesNoButton.innerHTML = answerChoices
-        let answerChoicesEl = this.htmlToElement(answerChoices)
+        this.qbankArray.push(questionChoicesNoButton)
+
+        /* let answerChoicesEl = this.htmlToElement(answerChoices)
         let questionInputs = answerChoicesEl.querySelectorAll('.question-inputs')
-        console.log(questionInputs)
+        console.log(questionInputs) */
     } 
 
     displayQuestionWithoutImage(arrayOfQuestions) {
         let showQuestion = `
             <p>${arrayOfQuestions[currentQuestionIndex].question} </p>`
         let answerChoices = `<ul>
-        <input id="question-one-input" class="question-inputs" type="radio" name="question">
+        <input id="question-one-input" class="question-inputs" type="radio" name="question" value="${arrayOfQuestions[currentQuestionIndex].choices[0]}">
         <span>
             A. 
             <div class="question-one-answer question-answer-choice">${arrayOfQuestions[currentQuestionIndex].choices[0]}</div>
         </span>
     </ul>
     <ul>
-        <input id="question-two-input" class="question-inputs" type="radio" name="question">
+        <input id="question-two-input" class="question-inputs" type="radio" name="question" value="${arrayOfQuestions[currentQuestionIndex].choices[1]}">
         <span>
             B. 
             <div class="question-two-answer question-answer-choice">${arrayOfQuestions[currentQuestionIndex].choices[1]}</div>
         </span>
     </ul>
     <ul>
-        <input id="question-three-input" class="question-inputs" type="radio" name="question">
+        <input id="question-three-input" class="question-inputs" type="radio" name="question" value="${arrayOfQuestions[currentQuestionIndex].choices[2]}">
         <span>
             C. 
             <div class="question-three-answer question-answer-choice">${arrayOfQuestions[currentQuestionIndex].choices[2]}</div>
         </span>
     </ul>
     <ul>
-        <input id="question-four-input" class="question-inputs" type="radio" name="question">
+        <input id="question-four-input" class="question-inputs" type="radio" name="question" value="${arrayOfQuestions[currentQuestionIndex].choices[3]}">
         <span>
             D. 
             <div class="question-four-answer question-answer-choice">${arrayOfQuestions[currentQuestionIndex].choices[3]}</div>
@@ -181,10 +176,7 @@ class QuestionBank {
     </ul>`
         questionVignette.innerHTML = showQuestion
         questionChoicesNoButton.innerHTML = answerChoices
-        this.htmlToElement(answerChoices)
-        let answerChoicesEl = this.htmlToElement(answerChoices)
-        answerChoicesEl.querySelectorAll('.question-inputs')
-        console.log(answerChoicesEl)
+        this.qbankArray.push(questionChoicesNoButton)
     } 
 }
 
@@ -200,7 +192,25 @@ window.addEventListener('load', () => {
 let currentQuestionIndex = 0
 let previousQuestionIndex 
 
-qbank.displayQuestionWithImage(questionsArray) 
+let firstQuestionAnswerChoicesArray = []
+
+function initQuestions() {
+    let questionInputs = qbank.qbankArray[0].querySelectorAll('.question-inputs')
+    questionInputs.forEach(el => {
+        firstQuestionAnswerChoicesArray.push(el)
+    })
+    questionInputs.forEach(el => {
+        el.addEventListener('click', (e) => {
+            console.log(e.target)
+        })
+    })
+}
+
+qbank.displayQuestionWithImage(questionsArray, setTimeout(() => {
+    initQuestions()
+}, 300)) 
+
+
 
 //move to next question 
 nextBtns.forEach(button => {
@@ -239,6 +249,20 @@ nextBtns.forEach(button => {
         } else if (!navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
             flagCheckboxInput.checked = true
         }
+
+        
+        firstQuestionAnswerChoicesArray.forEach(el => {
+            if (el.checked == true) {
+                sessionStorage.setItem('questionOne', el.value)
+            }
+        })
+
+        console.log(qbank.qbankArray)
+        let questionInputs = qbank.qbankArray[0].querySelectorAll('.question-inputs')
+        questionInputs.forEach(el => {
+            console.log(el)
+        })
+        //console.log(questionInputs)
     })
 })
 
