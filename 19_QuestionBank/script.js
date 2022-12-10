@@ -255,7 +255,10 @@ nextBtns.forEach(button => {
         
 
         checkBeforeStoring()
-        console.log(questionAnswerChoicesArray)
+        //console.log(questionAnswerChoicesArray)
+        qbank.qbankArray.forEach(el => {
+            console.log(el)
+        })
 
         //check if user has selected radio input; if yes, store item in session storage
         questionAnswerChoicesArray.forEach(el => {
@@ -309,6 +312,7 @@ previousBtn.addEventListener('click', () => {
 
     checkBeforeStoring()
     //console.log(questionAnswerChoicesArray)
+    
 
     //check session storage to display saved results if applicable
             for (let i = 0; i < sessionStorage.length; i++) {
