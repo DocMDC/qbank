@@ -34,20 +34,20 @@ let questionsArray = [
         subject: 'Physiology',
         chapter: 'General Principles',
         section: 2,
-        question: 'What color is the grass?',
+        question: 'What is 2 + 2?',
         image: null,
-        choices: ['Red', 'Blue', 'Orange', 'Green'],
-        correctAnswer: 'Green'
+        choices: ['2', '3', '4', '5'],
+        correctAnswer: '4'
     },
     {
         id: 4,
         subject: 'Physiology',
         chapter: 'General Principles',
         section: 2,
-        question: 'What color is an orange fruit?',
+        question: 'Which of the following is a bug?',
         image: null,
-        choices: ['Red', 'Blue', 'Orange', 'Green'],
-        correctAnswer: 'Orange'
+        choices: ['Ant', 'Dog', 'Cat', 'Fish'],
+        correctAnswer: 'Ant'
     },
     {
         id: 5,
@@ -98,8 +98,6 @@ class QuestionBank {
 
     }
 
-    qbankArray = []
-
     displayQuestionWithImage(arrayOfQuestions) {
         let showQuestion = `
             <p>${arrayOfQuestions[currentQuestionIndex].question} </p>
@@ -136,7 +134,6 @@ class QuestionBank {
     </ul>`
         questionVignette.innerHTML = showQuestion
         questionChoicesNoButton.innerHTML = answerChoices
-        this.qbankArray.push(questionChoicesNoButton)
     } 
 
     displayQuestionWithoutImage(arrayOfQuestions) {
@@ -172,7 +169,6 @@ class QuestionBank {
     </ul>`
         questionVignette.innerHTML = showQuestion
         questionChoicesNoButton.innerHTML = answerChoices
-        this.qbankArray.push(questionChoicesNoButton)
     } 
 }
 
@@ -188,33 +184,7 @@ window.addEventListener('load', () => {
 let currentQuestionIndex = 0
 let previousQuestionIndex 
 
-//array containing answer choice inputs that user has seen
-let questionAnswerChoicesArray = []
-
-function storeFirstAnswerChoices() {
-    let questionInputs = qbank.qbankArray[0].querySelectorAll('.question-inputs')
-    questionInputs.forEach(el => {
-        questionAnswerChoicesArray.push(el)
-    })
-}
-
-//update questionAnswerChoicesArray once user sees corresponding question choices
-function checkBeforeStoring() {
-    let questionInputs = qbank.qbankArray[0].querySelectorAll('.question-inputs')
-    let arrayValuesOne = []
-    questionAnswerChoicesArray.forEach(el => {
-        arrayValuesOne.push(el.value)
-    })
-    questionInputs.forEach(input => {
-        if (!arrayValuesOne.includes(input.value)) {
-            questionAnswerChoicesArray.push(input)
-        }
-    })
-}
-
-qbank.displayQuestionWithImage(questionsArray, setTimeout(() => {
-    storeFirstAnswerChoices()
-}, 300)) 
+qbank.displayQuestionWithImage(questionsArray)
 
 //move to next question 
 nextBtns.forEach(button => {
@@ -239,7 +209,18 @@ nextBtns.forEach(button => {
             navParent.children[previousQuestionIndex].style.backgroundColor = '#e2e2e2'
             navParent.children[previousQuestionIndex].style.color = 'black'
         }
-           
+        
+        //select inputs from the question (eg, previous question) just before clicking the next button
+        let inputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
+        inputs.forEach(input => {
+            //if radio button checked, save to session storage BEFORE moving to next question
+            if (input.checked == true) {
+                sessionStorage.setItem(`${currentQuestionIndex - 1}`, input.value)
+            } else {
+                console.log('nothing checked')
+            }
+        })
+
         if (questionsArray[currentQuestionIndex].image == null) {
             qbank.displayQuestionWithoutImage(questionsArray)
         } else {
@@ -252,20 +233,20 @@ nextBtns.forEach(button => {
         } else if (!navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
             flagCheckboxInput.checked = true
         }
-        
 
-        checkBeforeStoring()
-        //console.log(questionAnswerChoicesArray)
-        qbank.qbankArray.forEach(el => {
-            console.log(el)
-        })
+        //search session storage and if selection has already been made, display that selection
+        for (let i = 0; i < sessionStorage.length; i++) {
+        let sessionStorageKey = sessionStorage.key(i)
+        let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
 
-        //check if user has selected radio input; if yes, store item in session storage
-        questionAnswerChoicesArray.forEach(el => {
-            if (el.checked == true) {
-                sessionStorage.setItem(`${currentQuestionIndex - 1}`, el.value)
+        let newInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
+        newInputs.forEach(input => {
+            if (sessionStorageValue == input.value) {
+                input.setAttribute('checked', true)
             }
         })
+    }
+
     })
 })
 
@@ -297,6 +278,19 @@ previousBtn.addEventListener('click', () => {
         return
     }
 
+
+    //select inputs from the question (eg, previous question) just before clicking the next button
+    let inputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
+    inputs.forEach(input => {
+        //if radio button checked, save to session storage BEFORE moving to next question
+        if (input.checked == true) {
+            sessionStorage.setItem(`${currentQuestionIndex + 1}`, input.value)
+        } else {
+            console.log('nothing checked')
+        }
+    })
+
+    //display question
     if (questionsArray[currentQuestionIndex].image == null) {
         qbank.displayQuestionWithoutImage(questionsArray)
     } else {
@@ -308,28 +302,20 @@ previousBtn.addEventListener('click', () => {
         flagCheckboxInput.checked = false
     } else if (!navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
         flagCheckboxInput.checked = true
-    }
+    }    
 
-    checkBeforeStoring()
-    //console.log(questionAnswerChoicesArray)
-    
-
-    //check session storage to display saved results if applicable
+            //search session storage and if selection has already been made, display that selection
             for (let i = 0; i < sessionStorage.length; i++) {
                 let sessionStorageKey = sessionStorage.key(i)
                 let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
-
-                //if user already selected a choice, save that choice in session storage
-                if (sessionStorageKey == currentQuestionIndex) {
-                    let questionInputs = qbank.qbankArray[0].querySelectorAll('.question-inputs')
-                    questionInputs.forEach(input => {
-                        if (sessionStorageValue == input.value) {
-                            input.setAttribute('checked', true)
-                        }
-                    })
-                }
+        
+                let newInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
+                newInputs.forEach(input => {
+                    if (sessionStorageValue == input.value) {
+                        input.setAttribute('checked', true)
+                    }
+                })
             }
-    
 })
 
 //select any question
@@ -356,6 +342,17 @@ previousBtn.addEventListener('click', () => {
                 return
             }
 
+            //select inputs from the question (eg, previous question) just before clicking the next button
+            let inputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
+            inputs.forEach(input => {
+            //if radio button checked, save to session storage BEFORE moving to next question
+            if (input.checked == true) {
+                sessionStorage.setItem(`${currentQuestionIndex}`, input.value)
+            } else {
+                console.log('nothing checked')
+            }
+            })
+
             //display question corresponding to current nav item
             if (questionsArray[currentQuestionIndex].image == null) {
                 qbank.displayQuestionWithoutImage(questionsArray)
@@ -373,24 +370,18 @@ previousBtn.addEventListener('click', () => {
                 flagCheckboxInput.checked = true
             }
 
-            checkBeforeStoring()
-            //console.log(questionAnswerChoicesArray)
-
-            //check session storage to display saved results if applicable
+            //search session storage and if selection has already been made, display that selection
             for (let i = 0; i < sessionStorage.length; i++) {
-                let sessionStorageKey = sessionStorage.key(i)
-                let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
-
-                //if user already selected a choice, save that choice in session storage
-                if (sessionStorageKey == currentQuestionIndex) {
-                    let questionInputs = qbank.qbankArray[0].querySelectorAll('.question-inputs')
-                    questionInputs.forEach(input => {
-                        if (sessionStorageValue == input.value) {
-                            input.setAttribute('checked', true)
-                        }
-                    })
+            let sessionStorageKey = sessionStorage.key(i)
+            let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
+    
+            let newInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
+            newInputs.forEach(input => {
+                if (sessionStorageValue == input.value) {
+                    input.setAttribute('checked', true)
                 }
-            }
+            })
+        }
         })
     }
 
