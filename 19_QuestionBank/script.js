@@ -7,7 +7,18 @@ let questionsArray = [
         question: 'A 57-year-old male is brought to the emergency department by his wife with shortness of breath that started 4 hours ago. Associated symptoms include a worsening cough. The patient has a past medical history of chronic obstructive pulmonary disease. He continues to smoke 1 pack per day for the past 30 years. His temperature is 99.3 F (37.4 C), pulse is 111/min, respirations are 22, blood pressure is 129/83 mmHg, and O2 saturation is 86%. Physical examination reveals respiratory distress, prolonged expiratory phase of respiration, and diffuse wheezing. Which of the following methods of cellular transport occurs in the lungs when oxygen and carbon monoxide are exchanged?',
         image: 'Assets/testQuestion.png',
         choices: ['Simple Diffusion', 'Faciliated Diffusion', 'Primary Active Transport', 'Secondary Active Transport',],
-        correctAnswer: 'Simple Diffusion'
+        correctAnswer: 'Simple Diffusion',
+        correctAnswerLetter: 'A',
+        percentageCorrect: '65%',
+        explanationImage: 'Assets/answerImage.png',
+        explanation: `<div class="explanation-image-container">
+        <img src="${'Assets/answerImage.png'}" alt="explanation-image">
+    </div>
+    <div class="explanation-content-text">
+        <p>The patient in the vignette shows classic signs and symptoms of acute exacerbation of chronic obstructive pulmonary disease. Typical presentation includes increased dyspnea, increased cough frequency or severity, and sputum production. Diagnostic workup may include a chest x-ray which would reveal hyperinflation and arterial blood gas which would reveal hypoxia and CO2 retention. In the lungs, alveoli exchange inhaled O2 for CO2 from capillaries. The exchange of both of these goes from a high concentration to a low concentration <strong>(Choice A)</strong>. Thus, the transport of O2 and CO2 cannot be an example of active transport. Only transport from low to high concentration requires active transport or the use of energy in the form of ATP. In general, it is important to remember the list of these 4 molecules that undergo simple diffusion: O2, CO2, lipids, and steroids.</p><br>
+        <p><strong>(Choice B)</strong> Facilitated diffusion, although similar to simple diffusion in that it involves the transport of a molecule along its concentration gradient, has an important difference. Facilitated diffusion involves the use of a transporter or channel whereas in simple diffusion, molecules move freely across the cell membrane without the help of any proteins.</p><br>
+        <p><strong>(Choice C)</strong> Primary active transport is one form of active transport. This means that it involves the transport of a molecule from low concentration to high concentration; something that is not energetically favorable. Therefore, energy in the form of ATP is utilized to push the molecule into the already crowded area.</p><br>
+        <p><strong>(Choice D)</strong> Secondary active transport must be distinguished from primary active transport. As another form of active transport, secondary active transport also involves the transport of a molecule against its concentration gradient. With that said, secondary active transport occurs as a result of the actions of primary active transport. For example, primary active transport can result in a sodium gradient. This sodium gradient can be used by another molecule, such as glucose, to help it flow against its concentration gradient. Since the ATP was not used directly in the transferring of the glucose in this situation, it would be an example of secondary active transport.</p>`
     },
     {
         id: 1,
@@ -17,7 +28,11 @@ let questionsArray = [
         question: 'A 27-year-old female comes to the clinic complaining of intermittent palpitations over the past 2 days. She states she has been sweating more and experiencing a general feeling of nervousness. Her temperature is 99.7 F (37.6 C), pulse is 157/min, respirations are 14, blood pressure is 139/87 mmHg, and O2 saturation is 99%. Physical examination shows tachycardia and an irregularly irregular pulse. An electrocardiogram (EKG) is ordered and confirms atrial fibrillation. Laboratory studies are ordered and reveal the following',
         image: null,
         choices: ['Balh', 'asdf', 'booger', 'snake'],
-        correctAnswer: 'Balh'
+        correctAnswer: 'Balh',
+        correctAnswerLetter: 'A',
+        percentageCorrect: '45%',
+        explanationImage: null,
+        explanation: 'balh is the best explanation'
     },
     {
         id: 2,
@@ -27,7 +42,11 @@ let questionsArray = [
         question: 'What color is the sky?',
         image: null,
         choices: ['Red', 'Blue', 'Orange', 'Green'],
-        correctAnswer: 'Blue'
+        correctAnswer: 'Blue',
+        correctAnswerLetter: 'B',
+        percentageCorrect: '99%',
+        explanationImage: null,
+        explanation:'Everyone knows the sky is blue'
     },
     {
         id: 3,
@@ -37,7 +56,11 @@ let questionsArray = [
         question: 'What is 2 + 2?',
         image: null,
         choices: ['2', '3', '4', '5'],
-        correctAnswer: '4'
+        correctAnswer: '4',
+        correctAnswerLetter: 'C',
+        percentageCorrect: '96%',
+        explanationImage: null,
+        explanation: 'It is math.'
     },
     {
         id: 4,
@@ -47,7 +70,11 @@ let questionsArray = [
         question: 'Which of the following is a bug?',
         image: null,
         choices: ['Ant', 'Dog', 'Cat', 'Fish'],
-        correctAnswer: 'Ant'
+        correctAnswer: 'Ant',
+        correctAnswerLetter: 'A',
+        percentageCorrect: '88%',
+        explanationImage: null,
+        explanation: 'An ant is a bug. The others are animals.'
     },
     {
         id: 5,
@@ -57,7 +84,11 @@ let questionsArray = [
         question: 'How many books are in the Harry Potter Series?',
         image: null,
         choices: ['7', '8', '9', '10'],
-        correctAnswer: '7'
+        correctAnswer: '7',
+        correctAnswerLetter: 'A',
+        percentageCorrect: '67%',
+        explanationImage: null,
+        explanation: 'She wrote 7 books'
     },
     {
         id: 6,
@@ -67,7 +98,11 @@ let questionsArray = [
         question: 'What is the capital of Utah?',
         image: null,
         choices: ['Salt Lake City', 'Nashville', 'Boise', 'Bountiful'],
-        correctAnswer: 'Salt Lake City'
+        correctAnswer: 'Salt Lake City',
+        correctAnswerLetter: 'A',
+        percentageCorrect: '82%',
+        explanationImage: null,
+        explanation: 'It is simple geography.'
     },
     
 ];
@@ -76,8 +111,6 @@ const markFlagContainer = document.querySelector('.mark-flag-container')
 const flagCheckboxInput = document.querySelector('.flag-checkbox-input')
 const formEl = document.querySelector('form')
 const showAnswerBtn = document.querySelector('.show-answer-button')
-const briefExplanationContainer = document.querySelector('.brief-explanation-container')
-const explanationContentContainer = document.querySelector('.explanation-content-container')
 const nextBtns = document.querySelectorAll('.next-button');
 const previousBtn = document.querySelector('.previous-container')
 const questionVignette = document.querySelector('.question-vignette')
@@ -88,11 +121,11 @@ const currentItemQuestionNumber = document.querySelector('.current-item-question
 const totalItemQuestionNumber = document.querySelector('.total-item-question-number')
 const navParent = document.querySelector('.question-nav-container')
 const questionChoicesNoBtn = document.querySelector('.question-choices-no-button')
-
-let selectedQuestions = {
-    number: [] 
-}
-
+const briefExplanationContainer = document.querySelector('.brief-explanation-container')
+const explanationContentContainer = document.querySelector('.explanation-content-container')
+const explanationContent = document.querySelector('.explanation-content')
+const explanationReference = document.querySelector('.explanation-reference')
+const copyrightInfo = document.querySelector('.copyright-info')
 class QuestionBank {
     constructor() {
 
@@ -170,12 +203,140 @@ class QuestionBank {
         questionVignette.innerHTML = showQuestion
         questionChoicesNoButton.innerHTML = answerChoices
     } 
+
+    displayExplanationWhenIncorrect(arrayOfQuestions) {
+        briefExplanationContainer.innerHTML = `<div class="statistics">
+        <div class="statistics-incorrect">
+            <h4>Incorrect</h4>
+            <p>Correct answer</p>
+            <span>${arrayOfQuestions[currentQuestionIndex].correctAnswerLetter}</span>
+        </div>
+        <div class="statistics-percentage-correct">
+            <div>
+                <span class="material-symbols-outlined">
+                    equalizer
+                </span>
+            </div>
+            <div>
+                <span>${arrayOfQuestions[currentQuestionIndex].percentageCorrect}</span>
+                <p>Answered correctly</p>
+            </div>
+        </div>
+        <div class="statistics-time-spent">
+            <div>
+                <span class="material-symbols-outlined">
+                    schedule
+                </span>
+            </div>
+            <div>
+                <span>${'need to create timer'}</span>
+                <p>Time Spent</p>
+            </div>
+        </div>
+        <div class="statistics-version-display">
+            <div>
+                <span class="material-symbols-outlined">
+                    calendar_month
+                </span>
+            </div>
+            <div>
+                <span>2022</span>
+                <p>Version</p>
+            </div>
+        </div>
+    </div>`
+        
+    
+    explanationContent.innerHTML = arrayOfQuestions[currentQuestionIndex].explanation
+        explanationReference.innerHTML = `                    <div>
+        <span>${arrayOfQuestions[currentQuestionIndex].subject}</span>
+        <p>Subject</p>
+    </div>
+    <div>
+        <span>${arrayOfQuestions[currentQuestionIndex].chapter}</span>
+        <p>Chapter</p>
+    </div>
+    <div>
+        <span>${arrayOfQuestions[currentQuestionIndex].section}</span>
+        <p>Section</p>
+    </div>`
+        copyrightInfo.innerHTML = `<p>Copyright &#169; Physeo. All rights reserved.</p>`
+    }
+
+    displayExplanationWhenCorrect(arrayOfQuestions) {
+        
+        briefExplanationContainer.innerHTML = `<div class="statistics">
+        <div class="statistics-correct">
+            <h4>Correct</h4>
+            <p>Correct answer</p>
+            <span>${arrayOfQuestions[currentQuestionIndex].correctAnswerLetter}</span>
+        </div>
+        <div class="statistics-percentage-correct">
+            <div>
+                <span class="material-symbols-outlined">
+                    equalizer
+                </span>
+            </div>
+            <div>
+                <span>${arrayOfQuestions[currentQuestionIndex].percentageCorrect}</span>
+                <p>Answered correctly</p>
+            </div>
+        </div>
+        <div class="statistics-time-spent">
+            <div>
+                <span class="material-symbols-outlined">
+                    schedule
+                </span>
+            </div>
+            <div>
+                <span>${'need to create timer'}</span>
+                <p>Time Spent</p>
+            </div>
+        </div>
+        <div class="statistics-version-display">
+            <div>
+                <span class="material-symbols-outlined">
+                    calendar_month
+                </span>
+            </div>
+            <div>
+                <span>2022</span>
+                <p>Version</p>
+            </div>
+        </div>
+    </div>`
+        const statistics = document.querySelector('.statistics')
+        statistics.style.borderLeft = '9px solid green'
+        explanationContent.innerHTML = arrayOfQuestions[currentQuestionIndex].explanation
+        explanationReference.innerHTML = `                    <div>
+        <span>${arrayOfQuestions[currentQuestionIndex].subject}</span>
+        <p>Subject</p>
+    </div>
+    <div>
+        <span>${arrayOfQuestions[currentQuestionIndex].chapter}</span>
+        <p>Chapter</p>
+    </div>
+    <div>
+        <span>${arrayOfQuestions[currentQuestionIndex].section}</span>
+        <p>Section</p>
+    </div>`
+        copyrightInfo.innerHTML = `<p>Copywright &#169; Physeo. All rights reserved.</p>`
+    }
+
+    hideExplanation() {
+        explanationContent.innerHTML = ''
+        explanationReference.innerHTML = ''
+        briefExplanationContainer.classList.add('hide')
+        explanationContentContainer.classList.add('hide')
+    }
 }
 
 let qbank = new QuestionBank
+let score = 0
 
 //preloader
 window.addEventListener('load', () => {
+    sessionStorage.clear()
     setTimeout(() => {
         preloader.classList.add('hide-preloader')
     }, 1000)
@@ -184,18 +345,75 @@ window.addEventListener('load', () => {
 let currentQuestionIndex = 0
 let previousQuestionIndex 
 
-qbank.displayQuestionWithImage(questionsArray)
+qbank.displayQuestionWithImage(questionsArray, setTimeout(() => {
+    dealWithFirstQuestion()
+}, 400))
 
-//move to next question 
+function dealWithFirstQuestion() {
+         //update flag checkbox radio input in header if applicable
+         if (navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
+            flagCheckboxInput.checked = false
+        } else if (!navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
+            flagCheckboxInput.checked = true
+        }
+
+        //search session storage and if selection has already been made, display that selection
+            for (let i = 0; i < sessionStorage.length; i++) {
+            let sessionStorageKey = sessionStorage.key(i)
+            let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
+
+            let newInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
+            newInputs.forEach(input => {
+                if (sessionStorageValue == input.value) {
+                    input.setAttribute('checked', true)
+                }
+            })
+        }
+        
+        //remove bullet if question has already been answered or if user selects choice
+        let bullet = navParent.children[currentQuestionIndex].querySelector('.question-number :nth-child(1)')
+        
+        let currentInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
+
+        currentInputs.forEach(input => {
+            if (input.checked == true) {
+                bullet.style.visibility = 'hidden'
+            }
+        })
+
+        currentInputs.forEach(input => {
+            input.addEventListener('click', () => {
+                if (input.checked == true) {
+                    bullet.style.visibility = 'hidden'
+                }
+            })
+        })
+
+        //strikethrough answer choices
+
+        let currentAnswerChoices = questionChoicesNoButton.querySelectorAll('.question-answer-choice')
+        
+        currentAnswerChoices.forEach(el => {
+            el.addEventListener('click', () => {
+                if (el.style.textDecoration == 'line-through') {
+                    el.style.textDecoration = 'none'
+                } else {
+                    el.style.textDecoration = 'line-through'
+                }
+            })
+        }) 
+}
+
+/*========== MOVE TO NEXT QUESTION ==========*/
 nextBtns.forEach(button => {
     button.addEventListener('click', () => {
         previousQuestionIndex = currentQuestionIndex
         currentQuestionIndex += 1
-        if (currentQuestionIndex >= selectedQuestions.number[0] - 1) {
-            currentQuestionIndex = selectedQuestions.number[0] - 1
-        }
 
         currentItemQuestionNumber.innerHTML = currentQuestionIndex + 1
+
+        //hide current explanation
+        qbank.hideExplanation()
 
         //highlight current nav item
         navParent.children[currentQuestionIndex].style.backgroundColor = '#004975'
@@ -210,14 +428,14 @@ nextBtns.forEach(button => {
             navParent.children[previousQuestionIndex].style.color = 'black'
         }
         
-        //select inputs from the question (eg, previous question) just before clicking the next button
+        //select inputs from the question (eg, previous question) just before displaying the new question
         let inputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
         inputs.forEach(input => {
             //if radio button checked, save to session storage BEFORE moving to next question
             if (input.checked == true) {
                 sessionStorage.setItem(`${currentQuestionIndex - 1}`, input.value)
             } else {
-                console.log('nothing checked')
+                return
             }
         })
 
@@ -235,22 +453,54 @@ nextBtns.forEach(button => {
         }
 
         //search session storage and if selection has already been made, display that selection
-        for (let i = 0; i < sessionStorage.length; i++) {
-        let sessionStorageKey = sessionStorage.key(i)
-        let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
+            for (let i = 0; i < sessionStorage.length; i++) {
+            let sessionStorageKey = sessionStorage.key(i)
+            let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
 
-        let newInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
-        newInputs.forEach(input => {
-            if (sessionStorageValue == input.value) {
-                input.setAttribute('checked', true)
+            let newInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
+            newInputs.forEach(input => {
+                if (sessionStorageValue == input.value) {
+                    input.setAttribute('checked', true)
+                }
+            })
+        }
+        
+        //remove bullet if question has already been answered or if user selects choice
+        let bullet = navParent.children[currentQuestionIndex].querySelector('.question-number :nth-child(1)')
+        
+        let currentInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
+
+        currentInputs.forEach(input => {
+            if (input.checked == true) {
+                bullet.style.visibility = 'hidden'
             }
         })
-    }
 
+        currentInputs.forEach(input => {
+            input.addEventListener('click', () => {
+                if (input.checked == true) {
+                    bullet.style.visibility = 'hidden'
+                }
+            })
+        })
+
+        //strikethrough answer choices
+        
+        let currentAnswerChoices = questionChoicesNoButton.querySelectorAll('.question-answer-choice')
+        
+        currentAnswerChoices.forEach(el => {
+            el.addEventListener('click', () => {
+                if (el.style.textDecoration == 'line-through') {
+                    el.style.textDecoration = 'none'
+                } else {
+                    el.style.textDecoration = 'line-through'
+                }
+            })
+        }) 
     })
 })
 
-//move to previous question
+/*========== MOVE TO PREVIOUS QUESTION ==========*/
 previousBtn.addEventListener('click', () => {
     previousQuestionIndex = currentQuestionIndex
     currentQuestionIndex -= 1
@@ -262,6 +512,9 @@ previousBtn.addEventListener('click', () => {
     }
 
     currentItemQuestionNumber.innerHTML = currentQuestionIndex + 1
+
+    //hide current explanation
+    qbank.hideExplanation()
 
     //highlight current nav item
     navParent.children[currentQuestionIndex].style.backgroundColor = '#004975'
@@ -286,7 +539,7 @@ previousBtn.addEventListener('click', () => {
         if (input.checked == true) {
             sessionStorage.setItem(`${currentQuestionIndex + 1}`, input.value)
         } else {
-            console.log('nothing checked')
+            return
         }
     })
 
@@ -304,28 +557,76 @@ previousBtn.addEventListener('click', () => {
         flagCheckboxInput.checked = true
     }    
 
-            //search session storage and if selection has already been made, display that selection
-            for (let i = 0; i < sessionStorage.length; i++) {
-                let sessionStorageKey = sessionStorage.key(i)
-                let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
-        
-                let newInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
-                newInputs.forEach(input => {
-                    if (sessionStorageValue == input.value) {
-                        input.setAttribute('checked', true)
-                    }
-                })
+    //search session storage and if selection has already been made, display that selection
+    for (let i = 0; i < sessionStorage.length; i++) {
+        let sessionStorageKey = sessionStorage.key(i)
+        let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
+
+        let newInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
+        newInputs.forEach(input => {
+            if (sessionStorageValue == input.value) {
+                input.setAttribute('checked', true)
             }
+        })
+    }
+    
+        //remove bullet if question has already been answered or if user selects choice
+        let bullet = navParent.children[currentQuestionIndex].querySelector('.question-number :nth-child(1)')
+        
+        let currentInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
+
+        currentInputs.forEach(input => {
+            if (input.checked == true) {
+                bullet.style.visibility = 'hidden'
+            }
+        })
+
+        currentInputs.forEach(input => {
+            input.addEventListener('click', () => {
+                if (input.checked == true) {
+                    bullet.style.visibility = 'hidden'
+                }
+            })
+        })
+
+        //strikethrough answer choices
+        
+        let currentAnswerChoices = questionChoicesNoButton.querySelectorAll('.question-answer-choice')
+        
+        currentAnswerChoices.forEach(el => {
+            el.addEventListener('click', () => {
+                if (el.style.textDecoration == 'line-through') {
+                    el.style.textDecoration = 'none'
+                } else {
+                    el.style.textDecoration = 'line-through'
+                }
+            })
+        }) 
 })
 
-//select any question
-    for (let i = 0; i < navParent.children.length; i++) {
+/*========== SELECT ANY QUESTION ==========*/
+for (let i = 0; i < navParent.children.length; i++) {
         let child = navParent.children[i]
         child.addEventListener('click', (e) => {
+
+            //select inputs from the question (eg, previous question) just before clicking the next question
+            let inputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
+            inputs.forEach(input => {
+                //if radio button checked, save to session storage BEFORE moving to next question
+                if (input.checked == true) {
+                    sessionStorage.setItem(`${currentQuestionIndex}`, input.value)
+                    } else {
+                        return
+                    }
+            })
+
             previousQuestionIndex = currentQuestionIndex
             
             let targetNumber = parseInt(e.target.dataset.number)
             currentQuestionIndex = targetNumber - 1
+
+            //hide current explanation
+            qbank.hideExplanation()
 
             //highlight current nav item
             navParent.children[currentQuestionIndex].style.backgroundColor = '#004975'
@@ -342,18 +643,7 @@ previousBtn.addEventListener('click', () => {
                 return
             }
 
-            //select inputs from the question (eg, previous question) just before clicking the next button
-            let inputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
-            inputs.forEach(input => {
-            //if radio button checked, save to session storage BEFORE moving to next question
-            if (input.checked == true) {
-                sessionStorage.setItem(`${currentQuestionIndex}`, input.value)
-            } else {
-                console.log('nothing checked')
-            }
-            })
-
-            //display question corresponding to current nav item
+            //display new question corresponding to current nav item
             if (questionsArray[currentQuestionIndex].image == null) {
                 qbank.displayQuestionWithoutImage(questionsArray)
             } else {
@@ -379,9 +669,42 @@ previousBtn.addEventListener('click', () => {
             newInputs.forEach(input => {
                 if (sessionStorageValue == input.value) {
                     input.setAttribute('checked', true)
+                    }
+                })
+            }
+
+            //remove bullet if question has already been answered or if user selects choice
+            let bullet = navParent.children[currentQuestionIndex].querySelector('.question-number :nth-child(1)')
+            
+            let currentInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
+
+            currentInputs.forEach(input => {
+                if (input.checked == true) {
+                    bullet.style.visibility = 'hidden'
                 }
             })
-        }
+
+            currentInputs.forEach(input => {
+                input.addEventListener('click', () => {
+                    if (input.checked == true) {
+                        bullet.style.visibility = 'hidden'
+                    }
+                })
+            })
+
+            //strikethrough answer choices
+            
+            let currentAnswerChoices = questionChoicesNoButton.querySelectorAll('.question-answer-choice')
+            
+            currentAnswerChoices.forEach(el => {
+                el.addEventListener('click', () => {
+                    if (el.style.textDecoration == 'line-through') {
+                        el.style.textDecoration = 'none'
+                    } else {
+                        el.style.textDecoration = 'line-through'
+                    }
+                })
+            }) 
         })
     }
 
@@ -402,21 +725,6 @@ markFlagContainer.addEventListener('click', () => {
     }
 })
 
-/* 
-
-//strikethrough answer choices
-questionAnswerChoice.forEach(el => {
-    el.addEventListener('click', () => {
-        if (el.style.textDecoration == 'line-through') {
-            el.style.textDecoration = 'none'
-        } else {
-            el.style.textDecoration = 'line-through'
-        }
-    })
-}) 
-
-*/
-
 formEl.addEventListener('submit', (e) => {
     e.preventDefault()
 })
@@ -426,4 +734,25 @@ formEl.addEventListener('submit', (e) => {
  showAnswerBtn.addEventListener('click', () => {
     briefExplanationContainer.classList.remove('hide')
     explanationContentContainer.classList.remove('hide')
+
+    //if correct increase score and display explanation with green highlighted content, else display red highlighted content and show explanation and not increase score
+    let userSelectedAnswerChoice = questionChoicesNoButton.querySelectorAll('.question-inputs')
+    let checkedInput
+
+    userSelectedAnswerChoice.forEach(choice => {
+        if (choice.checked === true) {
+            checkedInput = choice.value
+        } else {
+            return
+        }
+    })
+    
+    if (checkedInput === questionsArray[currentQuestionIndex].correctAnswer) {
+        qbank.displayExplanationWhenCorrect(questionsArray)
+        score += 1
+        console.log(score)
+    } else {
+        qbank.displayExplanationWhenIncorrect(questionsArray)
+        console.log(score)
+    }
  })

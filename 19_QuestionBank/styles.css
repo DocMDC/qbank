@@ -642,6 +642,14 @@
     color: #717172;
 }
 
+.statistics-correct h4 {
+    color: green;
+}
+
+.statistics-correct p {
+    color: #717172;
+}
+
 .statistics-percentage-correct {
     display: flex;
     width: 25%;
