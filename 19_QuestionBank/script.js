@@ -126,6 +126,11 @@ const explanationContentContainer = document.querySelector('.explanation-content
 const explanationContent = document.querySelector('.explanation-content')
 const explanationReference = document.querySelector('.explanation-reference')
 const copyrightInfo = document.querySelector('.copyright-info')
+
+let currentQuestionIndex = 0
+let previousQuestionIndex 
+let score = 0
+
 class QuestionBank {
     constructor() {
 
@@ -323,6 +328,7 @@ class QuestionBank {
         copyrightInfo.innerHTML = `<p>Copyright &#169; Physeo. All rights reserved.</p>`
     }
 
+    //hide the explanation to the question
     hideExplanation() {
         explanationContent.innerHTML = ''
         explanationReference.innerHTML = ''
@@ -341,50 +347,21 @@ class QuestionBank {
         explanationContentContainer.classList.remove('hide')
         this.displayExplanationWhenIncorrect(questionsArray)
     }
-}
 
-let qbank = new QuestionBank
-let score = 0
+    preventChangingAnswer() {
+        if (!briefExplanationContainer.classList.contains('hide')) {
+            let currentInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
+            currentInputs.forEach(input => {
+                input.addEventListener('click', (e) => {
+                    e.preventDefault()
+                })
+            })  
+        }                
+    }
 
-//preloader
-window.addEventListener('load', () => {
-    sessionStorage.clear()
-    setTimeout(() => {
-        preloader.classList.add('hide-preloader')
-    }, 1000)
-})
-
-let currentQuestionIndex = 0
-let previousQuestionIndex 
-
-qbank.displayQuestionWithImage(questionsArray, setTimeout(() => {
-    dealWithFirstQuestion()
-}, 400))
-
-function dealWithFirstQuestion() {
-         //update flag checkbox radio input in header if applicable
-         if (navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
-            flagCheckboxInput.checked = false
-        } else if (!navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
-            flagCheckboxInput.checked = true
-        }
-
-        //search session storage and if selection has already been made, display that selection
-            for (let i = 0; i < sessionStorage.length; i++) {
-            let sessionStorageKey = sessionStorage.key(i)
-            let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
-
-            let newInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
-            newInputs.forEach(input => {
-                if (sessionStorageValue == input.value) {
-                    input.setAttribute('checked', true)
-                }
-            })
-        }
-        
-        //remove bullet if question has already been answered or if user selects choice
+    //remove bullet if question has already been answered or if user selects choice
+    sessionStorageRemoveBullets() {
         let bullet = navParent.children[currentQuestionIndex].querySelector('.question-number :nth-child(1)')
-        
         let currentInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
 
         currentInputs.forEach(input => {
@@ -400,11 +377,11 @@ function dealWithFirstQuestion() {
                 }
             })
         })
+    }
 
-        //strikethrough answer choices
-
+    //strikethrough answer choices when user clicks
+    strikeAnswerChoice() {
         let currentAnswerChoices = questionChoicesNoButton.querySelectorAll('.question-answer-choice')
-        
         currentAnswerChoices.forEach(el => {
             el.addEventListener('click', () => {
                 if (el.style.textDecoration == 'line-through') {
@@ -414,24 +391,37 @@ function dealWithFirstQuestion() {
                 }
             })
         }) 
-}
+    }
 
-/*========== MOVE TO NEXT QUESTION ==========*/
-nextBtns.forEach(button => {
-    button.addEventListener('click', () => {
-        //hide last explanation
-        qbank.hideExplanation()
+    //search session storage and if selection has already been made, display that selection
+    searchSessionStorageForMarkedInputs() {
+        for (let i = 0; i < sessionStorage.length; i++) {
+            let sessionStorageKey = sessionStorage.key(i)
+            let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
 
-        previousQuestionIndex = currentQuestionIndex
-        currentQuestionIndex += 1
+            let newInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
+            newInputs.forEach(input => {
+                if (sessionStorageValue == input.value) {
+                    input.setAttribute('checked', true)
+                }
+            })
+        }
+    }
 
-        currentItemQuestionNumber.innerHTML = currentQuestionIndex + 1      
+    //update flag checkbox radio input in header if applicable
+    updateFlag() {
+        if (navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
+            flagCheckboxInput.checked = false
+        } else if (!navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
+            flagCheckboxInput.checked = true
+        }
+    }
 
-        //highlight current nav item
+    //highlight current nav item
+    //return default styling of previous nav item
+    updateNav() {
         navParent.children[currentQuestionIndex].style.backgroundColor = '#004975'
         navParent.children[currentQuestionIndex].style.color = 'white'
-
-        //return default styling of previous nav item
         if ((previousQuestionIndex + 1) % 2 == 0) {
             navParent.children[previousQuestionIndex].style.backgroundColor = 'white'
             navParent.children[previousQuestionIndex].style.color = 'black'
@@ -439,88 +429,82 @@ nextBtns.forEach(button => {
             navParent.children[previousQuestionIndex].style.backgroundColor = '#e2e2e2'
             navParent.children[previousQuestionIndex].style.color = 'black'
         }
-        
-        //select inputs from the question (eg, previous question) just before displaying the new question
+    }
+
+    //select inputs from the question (eg, previous question) just before displaying the new question
+    saveSelectionInSessionStorage(num) {
         let inputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
         inputs.forEach(input => {
             //if radio button checked, save to session storage BEFORE moving to next question
             if (input.checked == true) {
-                sessionStorage.setItem(`${currentQuestionIndex - 1}`, input.value)
+                sessionStorage.setItem(`${currentQuestionIndex + num}`, input.value)
             } else {
                 return
             }
         })
+    }
 
+    //display quesiton vignette and answer choices
+    displayQuestion() {
         if (questionsArray[currentQuestionIndex].image == null) {
-            qbank.displayQuestionWithoutImage(questionsArray)
+            this.displayQuestionWithoutImage(questionsArray)
         } else {
-            qbank.displayQuestionWithImage(questionsArray)
+            this.displayQuestionWithImage(questionsArray)
         }
+    }
 
-         //update flag checkbox radio input in header if applicable
-        if (navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
-            flagCheckboxInput.checked = false
-        } else if (!navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
-            flagCheckboxInput.checked = true
-        }
-
-        //search session storage and if selection has already been made, display that selection
-            for (let i = 0; i < sessionStorage.length; i++) {
-            let sessionStorageKey = sessionStorage.key(i)
-            let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
-
-            let newInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
-            newInputs.forEach(input => {
-                if (sessionStorageValue == input.value) {
-                    input.setAttribute('checked', true)
-                }
-            })
-        }
-
-        //search session storage to see if answer has already been answered and if so display explanation
+    //search session storage to see if answer has already been answered and if so display explanation
+    searchAndDisplaySessionStorageExplanation() {
         for (let i = 0; i < sessionStorage.length; i++) {
             let sessionStorageKey = sessionStorage.key(i)
             let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
 
             if (sessionStorageKey == (100 + currentQuestionIndex) && sessionStorageValue == 'correct') {
-                qbank.sessionStorageExplanationCorrect()
+                this.sessionStorageExplanationCorrect()
+                this.preventChangingAnswer()
+
             } else if (sessionStorageKey == (100 + currentQuestionIndex) && sessionStorageValue == 'incorrect') {
-                qbank.sessionStorageExplanationIncorrect()
+                this.sessionStorageExplanationIncorrect()
+                this.preventChangingAnswer()
             } 
         }
-        
-        //remove bullet if question has already been answered or if user selects choice
-        let bullet = navParent.children[currentQuestionIndex].querySelector('.question-number :nth-child(1)')
-        
-        let currentInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
+    }
+}
 
-        currentInputs.forEach(input => {
-            if (input.checked == true) {
-                bullet.style.visibility = 'hidden'
-            }
-        })
+let qbank = new QuestionBank
 
-        currentInputs.forEach(input => {
-            input.addEventListener('click', () => {
-                if (input.checked == true) {
-                    bullet.style.visibility = 'hidden'
-                }
-            })
-        })
+//preloader and initial load event
+window.addEventListener('load', () => {
+    sessionStorage.clear()
+    setTimeout(() => {
+        preloader.classList.add('hide-preloader')
+    }, 1000)
+    qbank.displayQuestion()
+    qbank.updateFlag()
+    qbank.searchSessionStorageForMarkedInputs()
+    qbank.sessionStorageRemoveBullets()
+    qbank.strikeAnswerChoice()
+    qbank.preventChangingAnswer()
+})
 
-        //strikethrough answer choices
-        
-        let currentAnswerChoices = questionChoicesNoButton.querySelectorAll('.question-answer-choice')
-        
-        currentAnswerChoices.forEach(el => {
-            el.addEventListener('click', () => {
-                if (el.style.textDecoration == 'line-through') {
-                    el.style.textDecoration = 'none'
-                } else {
-                    el.style.textDecoration = 'line-through'
-                }
-            })
-        }) 
+/*========== MOVE TO NEXT QUESTION ==========*/
+nextBtns.forEach(button => {
+    button.addEventListener('click', () => {
+        qbank.hideExplanation()
+
+        previousQuestionIndex = currentQuestionIndex
+        currentQuestionIndex += 1
+        currentItemQuestionNumber.innerHTML = currentQuestionIndex + 1      
+
+        qbank.updateNav()
+        qbank.saveSelectionInSessionStorage(-1)
+        qbank.displayQuestion()
+        qbank.updateFlag()
+        qbank.searchSessionStorageForMarkedInputs()
+        qbank.searchAndDisplaySessionStorageExplanation()
+        qbank.sessionStorageRemoveBullets()
+        qbank.strikeAnswerChoice()
+        qbank.preventChangingAnswer()
     })
 })
 
@@ -537,108 +521,16 @@ previousBtn.addEventListener('click', () => {
 
     currentItemQuestionNumber.innerHTML = currentQuestionIndex + 1
 
-    //hide current explanation
     qbank.hideExplanation()
-
-    //highlight current nav item
-    navParent.children[currentQuestionIndex].style.backgroundColor = '#004975'
-    navParent.children[currentQuestionIndex].style.color = 'white'
-
-    //return default styling of previous nav item
-    if ((previousQuestionIndex + 1) % 2 == 0 && previousQuestionIndex > 0) {
-        navParent.children[previousQuestionIndex].style.backgroundColor = 'white'
-        navParent.children[previousQuestionIndex].style.color = 'black'
-    } else if ((previousQuestionIndex + 1) % 2 !== 0 && previousQuestionIndex > 0) {
-        navParent.children[previousQuestionIndex].style.backgroundColor = '#e2e2e2'
-        navParent.children[previousQuestionIndex].style.color = 'black'
-    } else {
-        return
-    }
-
-
-    //select inputs from the question (eg, previous question) just before clicking the next button
-    let inputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
-    inputs.forEach(input => {
-        //if radio button checked, save to session storage BEFORE moving to next question
-        if (input.checked == true) {
-            sessionStorage.setItem(`${currentQuestionIndex + 1}`, input.value)
-        } else {
-            return
-        }
-    })
-
-    //display question
-    if (questionsArray[currentQuestionIndex].image == null) {
-        qbank.displayQuestionWithoutImage(questionsArray)
-    } else {
-        qbank.displayQuestionWithImage(questionsArray)
-    }
-
-     //update flag checkbox radio input in header if applicable
-    if (navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
-        flagCheckboxInput.checked = false
-    } else if (!navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
-        flagCheckboxInput.checked = true
-    }    
-
-    //search session storage and if selection has already been made, display that selection
-    for (let i = 0; i < sessionStorage.length; i++) {
-        let sessionStorageKey = sessionStorage.key(i)
-        let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
-
-        let newInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
-        newInputs.forEach(input => {
-            if (sessionStorageValue == input.value) {
-                input.setAttribute('checked', true)
-            }
-        })
-    }
-
-    //search session storage to see if answer has already been answered and if so display explanation
-
-    for (let i = 0; i < sessionStorage.length; i++) {
-        let sessionStorageKey = sessionStorage.key(i)
-        let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
-
-        if (sessionStorageKey == (100 + currentQuestionIndex) && sessionStorageValue == 'correct') {
-            qbank.sessionStorageExplanationCorrect()
-        } else if (sessionStorageKey == (100 + currentQuestionIndex) && sessionStorageValue == 'incorrect') {
-            qbank.sessionStorageExplanationIncorrect()
-        } 
-    }
-    
-        //remove bullet if question has already been answered or if user selects choice
-        let bullet = navParent.children[currentQuestionIndex].querySelector('.question-number :nth-child(1)')
-        
-        let currentInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
-
-        currentInputs.forEach(input => {
-            if (input.checked == true) {
-                bullet.style.visibility = 'hidden'
-            }
-        })
-
-        currentInputs.forEach(input => {
-            input.addEventListener('click', () => {
-                if (input.checked == true) {
-                    bullet.style.visibility = 'hidden'
-                }
-            })
-        })
-
-        //strikethrough answer choices
-        
-        let currentAnswerChoices = questionChoicesNoButton.querySelectorAll('.question-answer-choice')
-        
-        currentAnswerChoices.forEach(el => {
-            el.addEventListener('click', () => {
-                if (el.style.textDecoration == 'line-through') {
-                    el.style.textDecoration = 'none'
-                } else {
-                    el.style.textDecoration = 'line-through'
-                }
-            })
-        }) 
+    qbank.updateNav()
+    qbank.saveSelectionInSessionStorage(1)
+    qbank.displayQuestion()
+    qbank.updateFlag()   
+    qbank.searchSessionStorageForMarkedInputs()
+    qbank.searchAndDisplaySessionStorageExplanation()
+    qbank.sessionStorageRemoveBullets()
+    qbank.strikeAnswerChoice()
+    qbank.preventChangingAnswer() 
 })
 
 /*========== SELECT ANY QUESTION ==========*/
@@ -647,22 +539,13 @@ for (let i = 0; i < navParent.children.length; i++) {
         child.addEventListener('click', (e) => {
 
             //select inputs from the question (eg, previous question) just before clicking the next question
-            let inputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
-            inputs.forEach(input => {
-                //if radio button checked, save to session storage BEFORE moving to next question
-                if (input.checked == true) {
-                    sessionStorage.setItem(`${currentQuestionIndex}`, input.value)
-                    } else {
-                        return
-                    }
-            })
+            qbank.saveSelectionInSessionStorage(0)
 
             previousQuestionIndex = currentQuestionIndex
             
             let targetNumber = parseInt(e.target.dataset.number)
             currentQuestionIndex = targetNumber - 1
 
-            //hide current explanation
             qbank.hideExplanation()
 
             //highlight current nav item
@@ -680,81 +563,16 @@ for (let i = 0; i < navParent.children.length; i++) {
                 return
             }
 
-            //display new question corresponding to current nav item
-            if (questionsArray[currentQuestionIndex].image == null) {
-                qbank.displayQuestionWithoutImage(questionsArray)
-            } else {
-                qbank.displayQuestionWithImage(questionsArray)
-            }
+            qbank.displayQuestion()
 
             //update the displayed current question in the header
             currentItemQuestionNumber.innerHTML = currentQuestionIndex + 1
 
-            //update flag checkbox radio input in header if applicable
-            if (navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
-                flagCheckboxInput.checked = false
-            } else if (!navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
-                flagCheckboxInput.checked = true
-            }
-
-            //search session storage and if selection has already been made, display that selection
-            for (let i = 0; i < sessionStorage.length; i++) {
-            let sessionStorageKey = sessionStorage.key(i)
-            let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
-    
-            let newInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
-            newInputs.forEach(input => {
-                if (sessionStorageValue == input.value) {
-                    input.setAttribute('checked', true)
-                    }
-                })
-            }
-
-            //search session storage to see if answer has already been answered and if so display explanation
-
-            for (let i = 0; i < sessionStorage.length; i++) {
-                let sessionStorageKey = sessionStorage.key(i)
-                let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
-            
-                if (sessionStorageKey == (100 + currentQuestionIndex) && sessionStorageValue == 'correct') {
-                    qbank.sessionStorageExplanationCorrect()
-                } else if (sessionStorageKey == (100 + currentQuestionIndex) && sessionStorageValue == 'incorrect') {
-                    qbank.sessionStorageExplanationIncorrect()
-                } 
-            }
-
-            //remove bullet if question has already been answered or if user selects choice
-            let bullet = navParent.children[currentQuestionIndex].querySelector('.question-number :nth-child(1)')
-            
-            let currentInputs = questionChoicesNoButton.querySelectorAll('.question-inputs')
-
-            currentInputs.forEach(input => {
-                if (input.checked == true) {
-                    bullet.style.visibility = 'hidden'
-                }
-            })
-
-            currentInputs.forEach(input => {
-                input.addEventListener('click', () => {
-                    if (input.checked == true) {
-                        bullet.style.visibility = 'hidden'
-                    }
-                })
-            })
-
-            //strikethrough answer choices
-            
-            let currentAnswerChoices = questionChoicesNoButton.querySelectorAll('.question-answer-choice')
-            
-            currentAnswerChoices.forEach(el => {
-                el.addEventListener('click', () => {
-                    if (el.style.textDecoration == 'line-through') {
-                        el.style.textDecoration = 'none'
-                    } else {
-                        el.style.textDecoration = 'line-through'
-                    }
-                })
-            }) 
+            qbank.updateFlag()
+            qbank.searchSessionStorageForMarkedInputs()
+            qbank.searchAndDisplaySessionStorageExplanation()
+            qbank.sessionStorageRemoveBullets()
+            qbank.strikeAnswerChoice()           
         })
     }
 
@@ -781,7 +599,13 @@ formEl.addEventListener('submit', (e) => {
 
 //show stats and explanations when clicking 'show answer' button
 
- showAnswerBtn.addEventListener('click', () => {
+ showAnswerBtn.addEventListener('click', (e) => {
+    //if user has already clicked show answer button and explanations are displayed, prevent them from clicking again
+    if (!briefExplanationContainer.classList.contains('hide')) {
+        e.preventDefault()
+        e.stopImmediatePropagation()
+    } else {
+        
     briefExplanationContainer.classList.remove('hide')
     explanationContentContainer.classList.remove('hide')
 
@@ -811,5 +635,10 @@ formEl.addEventListener('submit', (e) => {
     //remove bullet if question is answered but nothing selected
     let bullet = navParent.children[currentQuestionIndex].querySelector('.question-number :nth-child(1)')
     bullet.style.visibility = 'hidden'
+    }
+
+    
+    qbank.preventChangingAnswer()
+
 
  })
