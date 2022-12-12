@@ -320,7 +320,7 @@ class QuestionBank {
         <span>${arrayOfQuestions[currentQuestionIndex].section}</span>
         <p>Section</p>
     </div>`
-        copyrightInfo.innerHTML = `<p>Copywright &#169; Physeo. All rights reserved.</p>`
+        copyrightInfo.innerHTML = `<p>Copyright &#169; Physeo. All rights reserved.</p>`
     }
 
     hideExplanation() {
@@ -328,6 +328,18 @@ class QuestionBank {
         explanationReference.innerHTML = ''
         briefExplanationContainer.classList.add('hide')
         explanationContentContainer.classList.add('hide')
+    }
+
+    sessionStorageExplanationCorrect() {
+        briefExplanationContainer.classList.remove('hide')
+        explanationContentContainer.classList.remove('hide')
+        this.displayExplanationWhenCorrect(questionsArray)
+    }
+    
+    sessionStorageExplanationIncorrect() {
+        briefExplanationContainer.classList.remove('hide')
+        explanationContentContainer.classList.remove('hide')
+        this.displayExplanationWhenIncorrect(questionsArray)
     }
 }
 
@@ -407,13 +419,13 @@ function dealWithFirstQuestion() {
 /*========== MOVE TO NEXT QUESTION ==========*/
 nextBtns.forEach(button => {
     button.addEventListener('click', () => {
+        //hide last explanation
+        qbank.hideExplanation()
+
         previousQuestionIndex = currentQuestionIndex
         currentQuestionIndex += 1
 
-        currentItemQuestionNumber.innerHTML = currentQuestionIndex + 1
-
-        //hide current explanation
-        qbank.hideExplanation()
+        currentItemQuestionNumber.innerHTML = currentQuestionIndex + 1      
 
         //highlight current nav item
         navParent.children[currentQuestionIndex].style.backgroundColor = '#004975'
@@ -463,6 +475,18 @@ nextBtns.forEach(button => {
                     input.setAttribute('checked', true)
                 }
             })
+        }
+
+        //search session storage to see if answer has already been answered and if so display explanation
+        for (let i = 0; i < sessionStorage.length; i++) {
+            let sessionStorageKey = sessionStorage.key(i)
+            let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
+
+            if (sessionStorageKey == (100 + currentQuestionIndex) && sessionStorageValue == 'correct') {
+                qbank.sessionStorageExplanationCorrect()
+            } else if (sessionStorageKey == (100 + currentQuestionIndex) && sessionStorageValue == 'incorrect') {
+                qbank.sessionStorageExplanationIncorrect()
+            } 
         }
         
         //remove bullet if question has already been answered or if user selects choice
@@ -569,6 +593,19 @@ previousBtn.addEventListener('click', () => {
             }
         })
     }
+
+    //search session storage to see if answer has already been answered and if so display explanation
+
+    for (let i = 0; i < sessionStorage.length; i++) {
+        let sessionStorageKey = sessionStorage.key(i)
+        let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
+
+        if (sessionStorageKey == (100 + currentQuestionIndex) && sessionStorageValue == 'correct') {
+            qbank.sessionStorageExplanationCorrect()
+        } else if (sessionStorageKey == (100 + currentQuestionIndex) && sessionStorageValue == 'incorrect') {
+            qbank.sessionStorageExplanationIncorrect()
+        } 
+    }
     
         //remove bullet if question has already been answered or if user selects choice
         let bullet = navParent.children[currentQuestionIndex].querySelector('.question-number :nth-child(1)')
@@ -673,6 +710,19 @@ for (let i = 0; i < navParent.children.length; i++) {
                 })
             }
 
+            //search session storage to see if answer has already been answered and if so display explanation
+
+            for (let i = 0; i < sessionStorage.length; i++) {
+                let sessionStorageKey = sessionStorage.key(i)
+                let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
+            
+                if (sessionStorageKey == (100 + currentQuestionIndex) && sessionStorageValue == 'correct') {
+                    qbank.sessionStorageExplanationCorrect()
+                } else if (sessionStorageKey == (100 + currentQuestionIndex) && sessionStorageValue == 'incorrect') {
+                    qbank.sessionStorageExplanationIncorrect()
+                } 
+            }
+
             //remove bullet if question has already been answered or if user selects choice
             let bullet = navParent.children[currentQuestionIndex].querySelector('.question-number :nth-child(1)')
             
@@ -750,9 +800,16 @@ formEl.addEventListener('submit', (e) => {
     if (checkedInput === questionsArray[currentQuestionIndex].correctAnswer) {
         qbank.displayExplanationWhenCorrect(questionsArray)
         score += 1
-        console.log(score)
+        sessionStorage.setItem(`${100 + currentQuestionIndex}`, 'correct')
+        console.log(`The current score is: ${score}`)
     } else {
         qbank.displayExplanationWhenIncorrect(questionsArray)
-        console.log(score)
+        sessionStorage.setItem(`${100 + currentQuestionIndex}`, 'incorrect')
+        console.log(`The current score is: ${score}`)
     }
+
+    //remove bullet if question is answered but nothing selected
+    let bullet = navParent.children[currentQuestionIndex].querySelector('.question-number :nth-child(1)')
+    bullet.style.visibility = 'hidden'
+
  })
