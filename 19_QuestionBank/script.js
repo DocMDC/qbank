@@ -421,6 +421,11 @@ class QuestionBank {
     //highlight current nav item
     //return default styling of previous nav item
     updateNav() {
+        console.log(navParent.children[currentQuestionIndex].children[1].innerHTML)
+        let currentNavNum = navParent.children[currentQuestionIndex].children[1].innerHTML
+        console.log(navParent.children[currentQuestionIndex])
+        console.log('this is the previous question index' + previousQuestionIndex)
+
         navParent.children[currentQuestionIndex].style.backgroundColor = '#004975'
         navParent.children[currentQuestionIndex].style.color = 'white'
         if ((previousQuestionIndex + 1) % 2 == 0) {
@@ -520,14 +525,12 @@ class trackTime {
 
     static displayMainTimer() {
         return `
-            <div>
-                <p>Block Time Elapsed:</p>
-                <span class='hours'></span>
-                <span>:</span>
-                <span class='minutes'></span>
-                <span>:</span>
-                <span class='seconds'></span>
-            </div>
+        <p>Block Time Elapsed: &nbsp</p>
+        <span class='hours'></span>
+        <span>:</span>
+        <span class='minutes'></span>
+        <span>:</span>
+        <span class='seconds'></span>
         `
     }
 }
@@ -535,6 +538,16 @@ class trackTime {
 let tracker = new trackTime(document.querySelector('.time'))
 
 let qbank = new QuestionBank
+
+let timeParentEl = document.querySelector('.time')
+
+setInterval(() => {
+    let hours = timeParentEl.querySelector('.hours').innerHTML
+    let minutes = timeParentEl.querySelector('.minutes').innerHTML
+    let seconds = timeParentEl.querySelector('.seconds').innerHTML
+
+    let totalTime = `${hours}:${minutes}:${seconds}`
+}, 1000)
 
 
 //preloader and initial load event
