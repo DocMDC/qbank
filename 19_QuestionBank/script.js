@@ -126,11 +126,12 @@ const explanationContentContainer = document.querySelector('.explanation-content
 const explanationContent = document.querySelector('.explanation-content')
 const explanationReference = document.querySelector('.explanation-reference')
 const copyrightInfo = document.querySelector('.copyright-info')
+const totalBlockTime = document.querySelector('.time')
 
 let currentQuestionIndex = 0
 let previousQuestionIndex 
 let score = 0
-
+       
 class QuestionBank {
     constructor() {
 
@@ -470,8 +471,71 @@ class QuestionBank {
         }
     }
 }
+class trackTime {
+    constructor(parentEl) {
+        parentEl.innerHTML = trackTime.displayMainTimer()
+
+        this.childEl = {
+            hours: parentEl.querySelector('.hours'),
+            minutes: parentEl.querySelector('.minutes'),
+            seconds: parentEl.querySelector('.seconds')
+        }
+
+        this.interval = null
+        this.second = 1
+        this.minute = this.second * 60
+        this.hour = this.minute * 60
+        this.day = this.hour * 24
+        this.totalTime = 0.001
+        this.beginCountdown()
+    }
+
+    updateTimer() { //updateInterfaceTime()
+        const hours = Math.floor((this.totalTime % this.day) / this.hour)
+        const minutes = Math.floor((this.totalTime % this.hour) / this.minute)
+        const seconds = Math.floor((this.totalTime % this.minute) / this.second)
+
+        this.childEl.hours.textContent = hours.toString().padStart(2, '0')
+        this.childEl.minutes.textContent = minutes.toString().padStart(2, '0')
+        this.childEl.seconds.textContent = seconds.toString().padStart(2, '0')
+    }
+
+    stopCountdown() {
+        clearInterval(this.interval)
+        this.interval = null;
+    }
+
+    beginCountdown() {
+        if (this.totalTime === 0) return;
+        
+        this.interval = setInterval(() => {
+            this.totalTime++
+            this.updateTimer()
+        }, 1000) 
+
+        if (this.remainingSeconds === 0) {
+            this.stopCountdown()
+        }
+    }
+
+    static displayMainTimer() {
+        return `
+            <div>
+                <p>Block Time Elapsed:</p>
+                <span class='hours'></span>
+                <span>:</span>
+                <span class='minutes'></span>
+                <span>:</span>
+                <span class='seconds'></span>
+            </div>
+        `
+    }
+}
+
+let tracker = new trackTime(document.querySelector('.time'))
 
 let qbank = new QuestionBank
+
 
 //preloader and initial load event
 window.addEventListener('load', () => {
@@ -636,9 +700,6 @@ formEl.addEventListener('submit', (e) => {
     let bullet = navParent.children[currentQuestionIndex].querySelector('.question-number :nth-child(1)')
     bullet.style.visibility = 'hidden'
     }
-
     
     qbank.preventChangingAnswer()
-
-
  })
