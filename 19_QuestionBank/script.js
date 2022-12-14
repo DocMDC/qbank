@@ -234,8 +234,12 @@ class QuestionBank {
                     schedule
                 </span>
             </div>
-            <div>
-                <span>${'need to create timer'}</span>
+            <div class='time-per-question'>
+                <span>
+                    <span class='question-hours'>:</span>
+                    <span class='question-minutes'>:</span>
+                    <span class='question-seconds'></span>  
+                </span>
                 <p>Time Spent</p>
             </div>
         </div>
@@ -294,8 +298,12 @@ class QuestionBank {
                     schedule
                 </span>
             </div>
-            <div>
-                <span>${'need to create timer'}</span>
+            <div class='time-per-question'>
+                <span>
+                    <span class='question-hours'>:</span>
+                    <span class='question-minutes'>:</span>
+                    <span class='question-seconds'></span>  
+                </span>
                 <p>Time Spent</p>
             </div>
         </div>
@@ -421,11 +429,6 @@ class QuestionBank {
     //highlight current nav item
     //return default styling of previous nav item
     updateNav() {
-        console.log(navParent.children[currentQuestionIndex].children[1].innerHTML)
-        let currentNavNum = navParent.children[currentQuestionIndex].children[1].innerHTML
-        console.log(navParent.children[currentQuestionIndex])
-        console.log('this is the previous question index' + previousQuestionIndex)
-
         navParent.children[currentQuestionIndex].style.backgroundColor = '#004975'
         navParent.children[currentQuestionIndex].style.color = 'white'
         if ((previousQuestionIndex + 1) % 2 == 0) {
@@ -476,9 +479,9 @@ class QuestionBank {
         }
     }
 }
-class trackTime {
+class trackTotalTime {
     constructor(parentEl) {
-        parentEl.innerHTML = trackTime.displayMainTimer()
+        parentEl.innerHTML = trackTotalTime.displayMainTimer()
 
         this.childEl = {
             hours: parentEl.querySelector('.hours'),
@@ -492,10 +495,10 @@ class trackTime {
         this.hour = this.minute * 60
         this.day = this.hour * 24
         this.totalTime = 0.001
-        this.beginCountdown()
+        this.beginCounter()
     }
 
-    updateTimer() { //updateInterfaceTime()
+    updateTimer() { 
         const hours = Math.floor((this.totalTime % this.day) / this.hour)
         const minutes = Math.floor((this.totalTime % this.hour) / this.minute)
         const seconds = Math.floor((this.totalTime % this.minute) / this.second)
@@ -505,12 +508,12 @@ class trackTime {
         this.childEl.seconds.textContent = seconds.toString().padStart(2, '0')
     }
 
-    stopCountdown() {
+    stopCounter() {
         clearInterval(this.interval)
         this.interval = null;
     }
 
-    beginCountdown() {
+    beginCounter() {
         if (this.totalTime === 0) return;
         
         this.interval = setInterval(() => {
@@ -519,7 +522,7 @@ class trackTime {
         }, 1000) 
 
         if (this.remainingSeconds === 0) {
-            this.stopCountdown()
+            this.stopCounter()
         }
     }
 
@@ -535,20 +538,71 @@ class trackTime {
     }
 }
 
-let tracker = new trackTime(document.querySelector('.time'))
+class trackQuestionTime {
+    constructor() {
+        this.interval = null
+        this.second = 1
+        this.minute = this.second * 60
+        this.hour = this.minute * 60
+        this.day = this.hour * 24
+        this.totalTime = 0.001
+        this.hours
+        this.minutes
+        this.seconds
+    }
 
+    resetTimer() {
+        clearInterval(this.interval)
+        this.interval = null
+        this.totalTime = 0.001
+    }
+
+    displayTime(seconds, minutes, hours) {
+        let timePerQuestion = document.querySelector('.time-per-question')
+        timePerQuestion.innerHTML = `
+            <span>    
+                <span class='question-hours'>${hours.toString().padStart(2, '0')}:</span>
+                <span class='question-minutes'>${minutes.toString().padStart(2, '0')}:</span>
+                <span class='question-seconds'>${seconds.toString().padStart(2, '0')}</span>
+            </span>
+            <p>Time Spent</p> 
+        `
+        this.resetTimer()
+    }
+
+    trackTime() {        
+        this.hours = Math.floor((this.totalTime % this.day) / this.hour)
+        this.minutes = Math.floor((this.totalTime % this.hour) / this.minute)
+        this.seconds = Math.floor((this.totalTime % this.minute) / this.second)     
+
+        console.log(this.hours.toString().padStart(2, '0'), this.minutes.toString().padStart(2, '0'), this.seconds.toString().padStart(2, '0')) 
+
+        showAnswerBtn.addEventListener('click', () => {
+            this.displayTime(this.seconds, this.minutes, this.hours)
+        })
+
+        nextBtns.forEach(button => {
+            button.addEventListener('click', () => {
+                this.resetTimer()
+            })
+        })
+
+        previousBtn.addEventListener('click', () => {
+            this.resetTimer()
+        })
+    }
+
+    beginCounter() {
+        this.interval = setInterval(() => {
+            this.totalTime++
+            this.trackTime()
+        }, 1000) 
+    }
+}
+
+let questionTimeTracker = new trackQuestionTime()
+let totalTimeTracker = new trackTotalTime(document.querySelector('.time'))
 let qbank = new QuestionBank
-
-let timeParentEl = document.querySelector('.time')
-
-setInterval(() => {
-    let hours = timeParentEl.querySelector('.hours').innerHTML
-    let minutes = timeParentEl.querySelector('.minutes').innerHTML
-    let seconds = timeParentEl.querySelector('.seconds').innerHTML
-
-    let totalTime = `${hours}:${minutes}:${seconds}`
-}, 1000)
-
 
 //preloader and initial load event
 window.addEventListener('load', () => {
@@ -557,6 +611,7 @@ window.addEventListener('load', () => {
         preloader.classList.add('hide-preloader')
     }, 1000)
     qbank.displayQuestion()
+    questionTimeTracker.beginCounter()
     qbank.updateFlag()
     qbank.searchSessionStorageForMarkedInputs()
     qbank.sessionStorageRemoveBullets()
@@ -576,6 +631,7 @@ nextBtns.forEach(button => {
         qbank.updateNav()
         qbank.saveSelectionInSessionStorage(-1)
         qbank.displayQuestion()
+        questionTimeTracker.beginCounter()
         qbank.updateFlag()
         qbank.searchSessionStorageForMarkedInputs()
         qbank.searchAndDisplaySessionStorageExplanation()
@@ -599,9 +655,25 @@ previousBtn.addEventListener('click', () => {
     currentItemQuestionNumber.innerHTML = currentQuestionIndex + 1
 
     qbank.hideExplanation()
-    qbank.updateNav()
+    
+    //highlight current nav item
+    navParent.children[currentQuestionIndex].style.backgroundColor = '#004975'
+    navParent.children[currentQuestionIndex].style.color = 'white'
+
+    //return default styling of previous nav item
+    if ((previousQuestionIndex + 1) % 2 == 0 && previousQuestionIndex > 0) {
+        navParent.children[previousQuestionIndex].style.backgroundColor = 'white'
+        navParent.children[previousQuestionIndex].style.color = 'black'
+    } else if ((previousQuestionIndex + 1) % 2 !== 0 && previousQuestionIndex > 0) {
+        navParent.children[previousQuestionIndex].style.backgroundColor = '#e2e2e2'
+        navParent.children[previousQuestionIndex].style.color = 'black'
+    } else {
+        return
+    }
+
     qbank.saveSelectionInSessionStorage(1)
     qbank.displayQuestion()
+    questionTimeTracker.beginCounter()
     qbank.updateFlag()   
     qbank.searchSessionStorageForMarkedInputs()
     qbank.searchAndDisplaySessionStorageExplanation()
@@ -641,6 +713,8 @@ for (let i = 0; i < navParent.children.length; i++) {
             }
 
             qbank.displayQuestion()
+            questionTimeTracker.resetTimer()
+            questionTimeTracker.beginCounter()
 
             //update the displayed current question in the header
             currentItemQuestionNumber.innerHTML = currentQuestionIndex + 1
