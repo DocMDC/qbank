@@ -22,31 +22,45 @@ let questionsArray = [
     },
     {
         id: 1,
-        subject: 'Physiology',
-        chapter: 'General Principles',
-        section: 2,
-        question: 'A 27-year-old female comes to the clinic complaining of intermittent palpitations over the past 2 days. She states she has been sweating more and experiencing a general feeling of nervousness. Her temperature is 99.7 F (37.6 C), pulse is 157/min, respirations are 14, blood pressure is 139/87 mmHg, and O2 saturation is 99%. Physical examination shows tachycardia and an irregularly irregular pulse. An electrocardiogram (EKG) is ordered and confirms atrial fibrillation. Laboratory studies are ordered and reveal the following',
-        image: null,
-        choices: ['Balh', 'asdf', 'booger', 'snake'],
-        correctAnswer: 'Balh',
-        correctAnswerLetter: 'A',
+        subject: 'Anatomy',
+        chapter: 'Cardiology',
+        section: 1,
+        question: 'A 17-year-old female is brought to the emergency room by her parents after being hit in the side of the head with a softball during a softball game. She initially blacked out momentarily but appeared to be ok until an hour later when she developed a severe headache and started to vomit. It was at this point that she came to the ER. In the ER she is afebrile with a blood pressure of 131/82, pulse of 119/min, oxygen saturation of 97 percent. She is distressed and unable to consistently respond to questions. Neurologic exam reveals a 7mm left pupil, the right pupil is 3mm, with 5/5 strength in all four limbs. Her head CT is shown below. Damage to a branch of which of the following arteries is most likely causing this patient\’s symptoms?',
+        image: 'Assets/answerImage1.png',
+        choices: ['Anterior cerebral artery', 'External carotid artery', 'Internal carotid artery', 'Middle cerebral artery'],
+        correctAnswer: 'External carotid artery',
+        correctAnswerLetter: 'B',
         percentageCorrect: '45%',
-        explanationImage: null,
-        explanation: 'balh is the best explanation'
+        explanationImage: 'Assets/answerImage2.png',
+        explanation: `<div class="explanation-image-container">
+        <img src="${'Assets/answerImage2.png'}" alt="explanation-image">
+    </div>
+    <div class="explanation-content-text">
+        <p>This patient presents with an epidural hematoma. An epidural hematoma may present with a lucid period in which the patient is relatively asymptomatic for a period of time prior to clinical decompensation. The expanding hematoma places pressure on the brain and can lead to herniation. One of the first signs of uncal herniation is an ipsilaterally dilated pupil due to external compression of cranial nerve III. Epidural hematomas are most commonly caused by trauma to the temporal bone which ruptures the middle meningeal artery. The middle meningeal artery comes off of the internal maxillary artery, which is a branch of the external carotid artery <strong>(Choice B)</strong>.</p><br>
+        <p><strong>(Choice A)</strong> A cingulate herniation may lead to compression of the anterior cerebral artery. However, compression of the anterior cerebral would present with contralateral paralysis and sensory loss of the lower extremity, not an ipsilaterally dilated pupil.</p><br>
+        <p><strong>(Choice C)</strong> The internal carotid artery supplies the various arteries that perfuse the brain. However, damage to the internal carotid artery does not result in an epidural hematoma.</p><br>
+        <p><strong>(Choice D)</strong> Damage to the middle cerebral artery results in contralateral motor and sensory loss of the face and upper limb, and possibly expressive or receptive aphasia. It is not involved in the pathogenesis of an epidural hematoma.</p>`
     },
     {
         id: 2,
-        subject: 'Physiology',
-        chapter: 'General Principles',
-        section: 2,
-        question: 'What color is the sky?',
+        subject: 'Anatomy',
+        chapter: 'Cardiology',
+        section: 1,
+        question: 'A 14-year-old boy visits the clinic for a pre-sports physical. The patient\’s vitals show that he has a blood pressure of 160/90 mmHg in the right arm, and 150/90 mmHg in the left arm. A thorough cardiovascular exam shows that the patient has a radio-femoral lag, but bilaterally synchronous radial pulses. X-ray reveals notching along rib margins. The patient is suspected to have a postductal coarctation of the aorta. Which of the following branches of the subclavian artery will most likely will allow blood flow to reach aorta distal to the coarctation?',
         image: null,
-        choices: ['Red', 'Blue', 'Orange', 'Green'],
-        correctAnswer: 'Blue',
-        correctAnswerLetter: 'B',
-        percentageCorrect: '99%',
-        explanationImage: null,
-        explanation:'Everyone knows the sky is blue'
+        choices: ['Axillary artery', 'Brachiocephalic artery', 'Internal thoracic artery', 'Vertebral artery'],
+        correctAnswer: 'Internal thoracic artery',
+        correctAnswerLetter: 'C',
+        percentageCorrect: '77%',
+        explanationImage: 'Assets/answerImage3.png',
+        explanation: `<div class="explanation-image-container">
+        <img src="${'Assets/answerImage3.png'}" alt="explanation-image">
+    </div>
+    <div class="explanation-content-text">
+        <p>The internal thoracic artery <strong>(Choice C) </strong> is a branch off the subclavian artery that courses deep to the sternum giving rise to segmental anterior intercostal arteries. The anterior intercostal arteries form collateral circuits with the posterior intercostal arteries that arise segmentally off the aorta. During coarctation of the aorta, the blood will reroute through the internal thoracic arteries →  anterior intercostal arteries →  posterior intercostal arteries →  aorta. This collatery circuitry allows the distal aorta to receive blood despite the coarctation in the aortic arch. It should be noted, that the stem states the patient presents with a radio-femoral lag and high blood pressure in both upper extremities which is consistent with aortic coarctation distal to the major arterial branches.</p><br>
+        <p><strong>(Choice A)</strong> The axillary artery is a continuation of the subclavian artery that courses through the axilla and supplies blood to the upper extremity via the downstream branches. The axillary artery has no collateral blood flow with the aorta.</p><br>
+        <p><strong>(Choice B)</strong> The brachiocephalic artery gives rise to the common carotid artery and subclavian artery on the right side of the body. The brachiocephalic artery has no collateral blood flow with the aorta.</p><br>
+        <p><strong>(Choice D)</strong> The vertebral artery gives rise to the basilar artery, posterior inferior cerebellar artery, and various spinal arteries. The vertebral artery has no collateral blood flow with the aorta.</p>`
     },
     {
         id: 3,
@@ -479,6 +493,7 @@ class QuestionBank {
         }
     }
 
+    //search session storage and display the time spent on the corresponding question if that question has already been answered
     searchAndDisplaySessionStorageQuestionTime() {
         for (let i = 0; i < sessionStorage.length; i++) {
             let sessionStorageKey = sessionStorage.key(i)
@@ -502,6 +517,7 @@ class QuestionBank {
         }
     }
 }
+
 class trackTotalTime {
     constructor(parentEl) {
         parentEl.innerHTML = trackTotalTime.displayMainTimer()
@@ -517,7 +533,7 @@ class trackTotalTime {
         this.minute = this.second * 60
         this.hour = this.minute * 60
         this.day = this.hour * 24
-        this.totalTime = 0.001
+        this.totalTime = 0
         this.beginCounter()
     }
 
@@ -536,17 +552,11 @@ class trackTotalTime {
         this.interval = null;
     }
 
-    beginCounter() {
-        if (this.totalTime === 0) return;
-        
+    beginCounter() {       
         this.interval = setInterval(() => {
             this.totalTime++
             this.updateTimer()
         }, 1000) 
-
-        if (this.remainingSeconds === 0) {
-            this.stopCounter()
-        }
     }
 
     static displayMainTimer() {
@@ -610,7 +620,7 @@ class trackQuestionTime {
             
             //set question time to session storage
             sessionStorage.setItem(`${200 + parseInt(currentQuestionIndex)}`, `${this.hours.toString().padStart(2, '0')}:${this.minutes.toString().padStart(2, '0')}:${this.seconds.toString().padStart(2, '0')}`)
-        })
+        })        
     }
 
     beginCounter() {
@@ -657,7 +667,6 @@ nextBtns.forEach(button => {
             if (sessionStorageKey == 200 + (currentQuestionIndex)) {
                 //there is a saved session storage time (question has been visited already but never answered)
                 let string = sessionStorageValue
-                console.log(string)
             }
         }
 
