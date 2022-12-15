@@ -478,6 +478,29 @@ class QuestionBank {
             } 
         }
     }
+
+    searchAndDisplaySessionStorageQuestionTime() {
+        for (let i = 0; i < sessionStorage.length; i++) {
+            let sessionStorageKey = sessionStorage.key(i)
+            let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
+
+            if (sessionStorageKey == (200 + currentQuestionIndex)) {
+                let hours = sessionStorageValue.slice(0, 2)
+                let minutes = sessionStorageValue.slice(3, 5)
+                let seconds = sessionStorageValue.slice(6, 8)
+
+                let timePerQuestion = document.querySelector('.time-per-question')
+        timePerQuestion.innerHTML = `
+            <span>    
+                <span class='question-hours'>${hours}:</span>
+                <span class='question-minutes'>${minutes}:</span>
+                <span class='question-seconds'>${seconds}</span>
+            </span>
+            <p>Time Spent</p> 
+        `
+            }
+        }
+    }
 }
 class trackTotalTime {
     constructor(parentEl) {
@@ -557,6 +580,12 @@ class trackQuestionTime {
         this.totalTime = 0.001
     }
 
+    updateTimer(time) {
+        clearInterval(this.interval)
+        this.interval = null
+        this.totalTime = time
+    }
+
     displayTime(seconds, minutes, hours) {
         let timePerQuestion = document.querySelector('.time-per-question')
         timePerQuestion.innerHTML = `
@@ -567,7 +596,6 @@ class trackQuestionTime {
             </span>
             <p>Time Spent</p> 
         `
-        this.resetTimer()
     }
 
     trackTime() {        
@@ -575,20 +603,13 @@ class trackQuestionTime {
         this.minutes = Math.floor((this.totalTime % this.hour) / this.minute)
         this.seconds = Math.floor((this.totalTime % this.minute) / this.second)     
 
-        console.log(this.hours.toString().padStart(2, '0'), this.minutes.toString().padStart(2, '0'), this.seconds.toString().padStart(2, '0')) 
+        //console.log(this.hours.toString().padStart(2, '0'), this.minutes.toString().padStart(2, '0'), this.seconds.toString().padStart(2, '0')) 
 
         showAnswerBtn.addEventListener('click', () => {
             this.displayTime(this.seconds, this.minutes, this.hours)
-        })
-
-        nextBtns.forEach(button => {
-            button.addEventListener('click', () => {
-                this.resetTimer()
-            })
-        })
-
-        previousBtn.addEventListener('click', () => {
-            this.resetTimer()
+            
+            //set question time to session storage
+            sessionStorage.setItem(`${200 + parseInt(currentQuestionIndex)}`, `${this.hours.toString().padStart(2, '0')}:${this.minutes.toString().padStart(2, '0')}:${this.seconds.toString().padStart(2, '0')}`)
         })
     }
 
@@ -628,13 +649,27 @@ nextBtns.forEach(button => {
         currentQuestionIndex += 1
         currentItemQuestionNumber.innerHTML = currentQuestionIndex + 1      
 
+        //search session storage for existing time on CURRENT question
+        for (let i = 0; i < sessionStorage.length; i++) {
+            let sessionStorageKey = sessionStorage.key(i)
+            let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
+
+            if (sessionStorageKey == 200 + (currentQuestionIndex)) {
+                //there is a saved session storage time (question has been visited already but never answered)
+                let string = sessionStorageValue
+                console.log(string)
+            }
+        }
+
         qbank.updateNav()
         qbank.saveSelectionInSessionStorage(-1)
         qbank.displayQuestion()
+        questionTimeTracker.resetTimer()
         questionTimeTracker.beginCounter()
         qbank.updateFlag()
         qbank.searchSessionStorageForMarkedInputs()
         qbank.searchAndDisplaySessionStorageExplanation()
+        qbank.searchAndDisplaySessionStorageQuestionTime()
         qbank.sessionStorageRemoveBullets()
         qbank.strikeAnswerChoice()
         qbank.preventChangingAnswer()
@@ -673,10 +708,12 @@ previousBtn.addEventListener('click', () => {
 
     qbank.saveSelectionInSessionStorage(1)
     qbank.displayQuestion()
+    questionTimeTracker.resetTimer()
     questionTimeTracker.beginCounter()
     qbank.updateFlag()   
     qbank.searchSessionStorageForMarkedInputs()
     qbank.searchAndDisplaySessionStorageExplanation()
+    qbank.searchAndDisplaySessionStorageQuestionTime()
     qbank.sessionStorageRemoveBullets()
     qbank.strikeAnswerChoice()
     qbank.preventChangingAnswer() 
@@ -722,6 +759,7 @@ for (let i = 0; i < navParent.children.length; i++) {
             qbank.updateFlag()
             qbank.searchSessionStorageForMarkedInputs()
             qbank.searchAndDisplaySessionStorageExplanation()
+            qbank.searchAndDisplaySessionStorageQuestionTime()
             qbank.sessionStorageRemoveBullets()
             qbank.strikeAnswerChoice()           
         })
@@ -776,11 +814,9 @@ formEl.addEventListener('submit', (e) => {
         qbank.displayExplanationWhenCorrect(questionsArray)
         score += 1
         sessionStorage.setItem(`${100 + currentQuestionIndex}`, 'correct')
-        console.log(`The current score is: ${score}`)
     } else {
         qbank.displayExplanationWhenIncorrect(questionsArray)
         sessionStorage.setItem(`${100 + currentQuestionIndex}`, 'incorrect')
-        console.log(`The current score is: ${score}`)
     }
 
     //remove bullet if question is answered but nothing selected
