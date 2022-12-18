@@ -13,6 +13,13 @@
     --clr-box-shadow: #4783bd;
     --clr-lab-content: #d7dcec;
     --clr-brief-explanation: transparent;
+    --extra-small-text: 0.9rem;
+    --small-text: 1.1rem;
+    --medium-text: 1.3rem;
+    --large-text: 1.5rem;
+    --proceed-btn: 1rem;
+    --show-answer-btn: 0.9rem;
+    --stats: 0.9rem;
 }
 
 * {
@@ -579,7 +586,7 @@
 
 .question-vignette {
     width: 50%;
-    font-size: 1.1rem;
+    font-size: var(--small-text);
     color: var(--clr-primary-text);
 }
 
@@ -608,7 +615,7 @@
     padding: 10px;
     line-height: 30px;
     box-shadow: 0px 5px var(--clr-secondary);
-    font-size: 1.1rem;
+    font-size: var(--small-text);
     color: var(--clr-black);
 }
 
@@ -629,7 +636,7 @@
 .show-answer-button {
     width: 130px;
     height: 30px;
-    font-size: 0.9rem;
+    font-size: var(--show-answer-btn);
     margin-top: 10px;
     font-weight: bold;
     display: flex;
@@ -665,7 +672,7 @@
     width: 70%;
     border-left: 9px solid red;
     box-shadow: 0px 2px 3px var(--clr-gray);
-    font-size: 0.9rem;
+    font-size: var(--stats);
     margin-top: 150px;
     background-color: var(--clr-brief-explanation);
 }
@@ -782,7 +789,7 @@
     width: 200px;
     height: 30px;
     color: white;
-    font-size: 1rem;
+    font-size: var(--proceed-btn);
 }
 
 .proceed-button button:hover {
@@ -843,7 +850,7 @@
 
 .explanation-content-text {
     padding-top: 20px;
-    font-size: 1.1rem;
+    font-size: var(--small-text);
 }
 
 .explanation-reference {
@@ -852,7 +859,7 @@
     padding: 20px 100px 20px 20px;
     margin-top: 20px;
     border-top: 1px solid var(--clr-light-gray);
-    font-size: 1.1rem;
+    font-size: var(--small-text);
     width: 70%;
     color: var(--clr-black);
 }
@@ -864,7 +871,7 @@
 .copyright-info {
     text-align: center;
     color: var(--clr-gray);
-    font-size: 0.9rem;
+    font-size: var(--extra-small-text);
     margin-top: 20px;
     width: 70%;
     color: var(--clr-gray);
@@ -1482,4 +1489,50 @@
 .remain-in-block-btn-finished:hover {
     cursor: pointer;
     background: linear-gradient(180deg, #c57a12, #dc7800);
+}
+
+/*==================RESULTS SCREEN===================*/
+
+.complete-screen {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 100vh;
+    width: 100%;
+    background-color: #fcfcfc;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    border-top: 75px solid #004975;
+    border-bottom: 75px solid #004975;
+    padding: 0px 100px 0px 100px;
+}
+
+.complete-screen.hide {
+    display: none;
+}
+
+.complete-screen-title h1 {
+    font-size: 3rem;
+    margin-bottom: 40px;
+}
+
+.complete-screen-results-summary {
+    background-color: #f0f0fc;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+}
+
+.complete-screen-results-summary h4 {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.complete-screen-results-summary p {
+    font-size: 1.3rem;
 }

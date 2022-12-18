@@ -53,17 +53,23 @@ const endBlockBtn = document.querySelector('.stop')
 const endBlockModalUnfinished = document.querySelector('.end-block-modal-unfinished')
 const numberOfUnansweredItems = document.querySelector('.number-of-unanswered-items')
 const remainInBlockUnfinishedBtn = document.querySelector('.remain-in-block-btn-unfinished')
-const finalizedEndBlockBtnUnfinished = document.querySelector('finalized-end-block-btn-unfinished')
+const finalizedEndBlockBtnUnfinished = document.querySelector('.finalized-end-block-btn-unfinished')
 const endBlockModalFinished = document.querySelector('.end-block-modal-finished')
 const remainInBlockFinishedBtn = document.querySelector('.remain-in-block-btn-finished')
-const finalizedEndBlockBtnFinished = document.querySelector('finalized-end-block-btn-finished')
+const finalizedEndBlockBtnFinished = document.querySelector('.finalized-end-block-btn-finished')
+const completeScreen = document.querySelector('.complete-screen')
+const resultsNumCorrect = document.getElementById('results-number-correct')
+const resultsTotalQuestions = document.getElementById('results-total-questions')
+const resultsPercentCorrect = document.getElementById('results-percent-correct')
+const smallFontBtn = document.querySelector('.small-font')
+const mediumFontBtn = document.querySelector('.medium-font')
+const largeFontBtn = document.querySelector('.large-font')
 
 let currentQuestionIndex = 0
 let previousQuestionIndex 
 let score = 0
 let reversedColor = false
 let examFinished = false
-
 
 const questionsArray = [
     {
@@ -395,7 +401,7 @@ class QuestionBank {
         <span>${arrayOfQuestions[currentQuestionIndex].section}</span>
         <p>Section</p>
     </div>`
-        copyrightInfo.innerHTML = `<p>Copyright &#169; Physeo. All rights reserved.</p>`
+        copyrightInfo.innerHTML = `<p>Copyright &#169; MedEdQbank. All rights reserved.</p>`
     }
 
     displayExplanationWhenCorrect(arrayOfQuestions) {
@@ -900,6 +906,10 @@ class QuestionBank {
         }
     }
 
+    makeFontSmall() {
+        rootEl.style.setProperty('--small-text', '1.3rem')
+    }
+
     checkIfExamComplete() {
         let allBullets = navParent.querySelectorAll('.question-number span:nth-child(1)')
         let bulletsArray = Array.from(allBullets)
@@ -1361,6 +1371,62 @@ notesDeleteBtn.addEventListener('click', () => {
     navParent.children[currentQuestionIndex].children[2].children[1].classList.add('hide')
 })
 
+//dark mode
+reverseColorBtn.addEventListener('click', () => {
+    qbank.reverseColor()
+    qbank.adjustNavColors()
+})
+
+//change font size
+smallFontBtn.addEventListener('click', () => {
+    rootEl.style.setProperty('--extra-small-text', '0.9rem')
+    rootEl.style.setProperty('--small-text', '1.1rem')
+    rootEl.style.setProperty('--medium-text', '1.3rem')
+    rootEl.style.setProperty('--large-text', '1.5rem')
+    rootEl.style.setProperty('--proceed-btn', '1rem')
+    rootEl.style.setProperty('--show-answer-btn', '0.9rem')
+    rootEl.style.setProperty('--stats', '0.9rem')
+    smallFontBtn.style.backgroundColor = '#d7dcec'
+    mediumFontBtn.style.backgroundColor = 'transparent'
+    largeFontBtn.style.backgroundColor = 'transparent'
+    smallFontBtn.style.color = 'black'
+    mediumFontBtn.style.color = 'white'
+    largeFontBtn.style.color = 'white'
+})
+
+mediumFontBtn.addEventListener('click', () => {
+    rootEl.style.setProperty('--extra-small-text', '1.1rem')
+    rootEl.style.setProperty('--small-text', '1.3rem')
+    rootEl.style.setProperty('--medium-text', '1.5rem')
+    rootEl.style.setProperty('--large-text', '1.7rem')
+    rootEl.style.setProperty('--proceed-btn', '1.1rem')
+    rootEl.style.setProperty('--show-answer-btn', '1rem')
+    rootEl.style.setProperty('--stats', '1.1rem')
+    smallFontBtn.style.backgroundColor = 'transparent'
+    mediumFontBtn.style.backgroundColor = '#d7dcec'
+    largeFontBtn.style.backgroundColor = 'transparent'
+    smallFontBtn.style.color = 'white'
+    mediumFontBtn.style.color = 'black'
+    largeFontBtn.style.color = 'white'
+})
+
+largeFontBtn.addEventListener('click', () => {
+    rootEl.style.setProperty('--extra-small-text', '1.3rem')
+    rootEl.style.setProperty('--small-text', '1.5rem')
+    rootEl.style.setProperty('--medium-text', '1.7rem')
+    rootEl.style.setProperty('--large-text', '1.9rem')
+    rootEl.style.setProperty('--proceed-btn', '1.2rem')
+    rootEl.style.setProperty('--show-answer-btn', '1.1rem')
+    rootEl.style.setProperty('--stats', '1.2rem')
+    smallFontBtn.style.backgroundColor = 'transparent'
+    mediumFontBtn.style.backgroundColor = 'transparent'
+    largeFontBtn.style.backgroundColor = '#d7dcec'
+    smallFontBtn.style.color = 'white'
+    mediumFontBtn.style.color = 'white'
+    largeFontBtn.style.color = 'black'
+})
+
+//lock exam
 lockBtn.addEventListener('click', () => {
     lockModal.classList.toggle('hide')
 })
@@ -1376,11 +1442,6 @@ unauthorizedBreakBtn.addEventListener('click', () => {
 unauthBreakReturnToExamBtn.addEventListener('click', () => {
     unauthorizedBreakModalEl.classList.add('hide')
     lockModal.classList.add('hide')
-})
-
-reverseColorBtn.addEventListener('click', () => {
-    qbank.reverseColor()
-    qbank.adjustNavColors()
 })
 
 endBlockBtn.addEventListener('click', () => {
@@ -1400,12 +1461,10 @@ endBlockBtn.addEventListener('click', () => {
                 numAnsweredArray.push('answered')
             }
         })
-
-        console.log('before reset array ' + numAnsweredArray)
-
         numberOfUnansweredItems.innerHTML = navParent.children.length - numAnsweredArray.length
-
         numAnsweredArray = []
+
+
     } else {
         //show modal showing that exam is complete
         endBlockModalFinished.classList.remove('hide')
@@ -1419,3 +1478,22 @@ remainInBlockUnfinishedBtn.addEventListener('click', () => {
 remainInBlockFinishedBtn.addEventListener('click', () => {
     endBlockModalFinished.classList.add('hide')
 })
+
+//clicked end block when questions are NOT complete and then clicked the "end block" confirm button
+finalizedEndBlockBtnUnfinished.addEventListener('click', () => {
+    completeScreen.classList.remove('hide')
+    resultsNumCorrect.innerHTML = score
+    resultsTotalQuestions.innerHTML = navParent.children.length 
+    totalPercentCorrect = Math.ceil((score / navParent.children.length) * 100)
+    resultsPercentCorrect.innerHTML = totalPercentCorrect
+})
+
+//clicked end block when questions ARE complete and then clicked the "end block" confirm button
+finalizedEndBlockBtnFinished.addEventListener('click', () => {
+    completeScreen.classList.remove('hide')
+    resultsNumCorrect.innerHTML = score
+    resultsTotalQuestions.innerHTML = navParent.children.length 
+    totalPercentCorrect = Math.ceil((score / navParent.children.length) * 100) 
+    resultsPercentCorrect.innerHTML = totalPercentCorrect
+}) 
+       
