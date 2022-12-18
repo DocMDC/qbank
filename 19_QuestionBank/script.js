@@ -1,4 +1,71 @@
-let questionsArray = [
+const markFlagContainer = document.querySelector('.mark-flag-container')
+const flagCheckboxInput = document.querySelector('.flag-checkbox-input')
+const formEl = document.querySelector('form')
+const showAnswerBtn = document.querySelector('.show-answer-button')
+const nextBtns = document.querySelectorAll('.next-button');
+const previousBtn = document.querySelector('.previous-container')
+const questionVignette = document.querySelector('.question-vignette')
+const questionChoicesForm = document.querySelector('.question-choices-form')
+const questionChoicesNoButton = document.querySelector('.question-choices-no-button')
+const preloader = document.querySelector('.preloader')
+const currentItemQuestionNumber = document.querySelector('.current-item-question-number')
+const totalItemQuestionNumber = document.querySelector('.total-item-question-number')
+const navParent = document.querySelector('.question-nav-container')
+const questionChoicesNoBtn = document.querySelector('.question-choices-no-button')
+const briefExplanationContainer = document.querySelector('.brief-explanation-container')
+const explanationContentContainer = document.querySelector('.explanation-content-container')
+const explanationContent = document.querySelector('.explanation-content')
+const explanationReference = document.querySelector('.explanation-reference')
+const copyrightInfo = document.querySelector('.copyright-info')
+const totalBlockTime = document.querySelector('.time')
+const labContentEl = document.querySelector('.lab-content')
+const labContentContainer = document.querySelector('.lab-content-container')
+const labFilterButtons = document.querySelectorAll('.lab-filter-btn')
+const labBtn = document.querySelector('.lab-container')
+const labSearch = document.querySelector('.lab-search')
+const urineBtn = document.querySelector('.urine-and-bmi')
+const bloodBtn = document.querySelector('.blood')
+const serumBtn = document.querySelector('.serum')
+const csfBtn = document.querySelector('.cerebrospinal')
+const labSearchButton = document.querySelector('.lab-search-button') 
+const calculatorIconBtn = document.querySelector('.calculator-container')
+const calculatorEl = document.querySelector('.calculator')
+const previousOperand = document.querySelector('[data-previous-operand]')
+const currentOperand = document.querySelector('[data-current-operand]')
+const allClearBtn = document.querySelector('[data-all-clear]')
+const equalsBtn = document.querySelector('[data-equal]')
+const numberBtns = document.querySelectorAll('[data-calc-number]')
+const operationBtns = document.querySelectorAll('[data-operations]')
+const notesIconBtn = document.querySelector('.notes-container')
+const notesContentContainer = document.querySelector('.notes-content-container')
+const notesSaveBtn = document.querySelector('.notes-save-btn')
+const notesDeleteBtn = document.querySelector('.notes-delete-btn')
+const notesText = document.querySelector('.notes-text')
+const lockBtn = document.querySelector('.lock')
+const lockModal = document.querySelector('.lock-modal')
+const unauthorizedBreakBtn = document.querySelector('.unauthorized-break-btn')
+const returnToExamBtn = document.querySelector('.return-to-exam-btn')
+const unauthorizedBreakModalEl = document.querySelector('.unauthorized-break-modal')
+const unauthBreakReturnToExamBtn = document.querySelector('.unauthorized-break-return-to-exam-btn')
+const rootEl = document.querySelector(':root')
+const reverseColorBtn = document.querySelector('.reverse-container')
+const endBlockBtn = document.querySelector('.stop')
+const endBlockModalUnfinished = document.querySelector('.end-block-modal-unfinished')
+const numberOfUnansweredItems = document.querySelector('.number-of-unanswered-items')
+const remainInBlockUnfinishedBtn = document.querySelector('.remain-in-block-btn-unfinished')
+const finalizedEndBlockBtnUnfinished = document.querySelector('finalized-end-block-btn-unfinished')
+const endBlockModalFinished = document.querySelector('.end-block-modal-finished')
+const remainInBlockFinishedBtn = document.querySelector('.remain-in-block-btn-finished')
+const finalizedEndBlockBtnFinished = document.querySelector('finalized-end-block-btn-finished')
+
+let currentQuestionIndex = 0
+let previousQuestionIndex 
+let score = 0
+let reversedColor = false
+let examFinished = false
+
+
+const questionsArray = [
     {
         id: 0,
         subject: 'Physiology',
@@ -64,88 +131,132 @@ let questionsArray = [
     },
     {
         id: 3,
-        subject: 'Physiology',
-        chapter: 'General Principles',
+        subject: 'Biochemistry',
+        chapter: 'Cellular Biology',
         section: 2,
-        question: 'What is 2 + 2?',
+        question: 'During sepsis, the adherens junctions between endothelial cells weaken, causing swelling and leukocyte extravasation. The cytoskeletal component connected to adherens junctions is also the primary proteinaceous component of which of the following structures?',
         image: null,
-        choices: ['2', '3', '4', '5'],
-        correctAnswer: '4',
-        correctAnswerLetter: 'C',
-        percentageCorrect: '96%',
+        choices: ['Spermatocyte flagellum', 'Cilia on airway epithelium', 'Axons', 'Intestinal microvilli'],
+        correctAnswer: 'Intestinal microvilli',
+        correctAnswerLetter: 'D',
+        percentageCorrect: '47%',
         explanationImage: null,
-        explanation: 'It is math.'
+        explanation: `<div class="explanation-content-text">
+        <p>Adherens junctions are connected to the actin cytoskeleton, and the only other structure listed that is primarily composed of actin are intestinal microvilli <strong>(Choice D)</strong>. Understanding which structures are composed of actin vs. microtubules is important clinically, since many cancer drugs inhibit or promote polymerization of actin or microtubules.</p><br>
+        <p><strong>(Choice A)</strong> The structural protein component of flagella is the microtubule, not actin.</p><br>
+        <p><strong>(Choice B)</strong> The structural protein component of cilia is the microtubule, not actin.</p><br>
+        <p><strong>(Choice C)</strong> Axons contain long tracks of microtubules along which the cell can transport vesicles and proteins to and from the cell body.</p>`
     },
     {
         id: 4,
-        subject: 'Physiology',
-        chapter: 'General Principles',
-        section: 2,
-        question: 'Which of the following is a bug?',
+        subject: 'Biochemistry',
+        chapter: 'Genetics',
+        section: 5,
+        question: 'All of the following scenarios violate assumptions of Hardy Weinberg EXCEPT:',
         image: null,
-        choices: ['Ant', 'Dog', 'Cat', 'Fish'],
-        correctAnswer: 'Ant',
-        correctAnswerLetter: 'A',
-        percentageCorrect: '88%',
+        choices: ['Homozygosity for a disease allele is lethal.', 'A large proportion of a population emigrates to a different country during wartime.', 'Historic royal families selecting mates from a small pool of other families', 'Onset of a disease phenotype in women occurs after menopause'],
+        correctAnswer: 'Onset of a disease phenotype in women occurs after menopause',
+        correctAnswerLetter: 'D',
+        percentageCorrect: '43%',
         explanationImage: null,
-        explanation: 'An ant is a bug. The others are animals.'
+        explanation: `<div class="explanation-content-text">
+        <p>The five assumptions of the Hardy Weinberg Principle are 1) No natural selection, 2) Random mating, 3) Large populations, 4) No mutation, and 5) No migration (“gene flow”). Of the answer choices, only <strong>(Choice D)</strong> does not violate any of these assumptions. A disease phenotype that occurs only in postmenopausal women would not be subject to natural selection (no decrease in mating fitness, since the disease occurs after reproductive years).</p><br>
+        <p><strong>(Choice A)</strong> If homozygosity for an allele were lethal, this would cause significant selective pressure against that allele, violating the “no natural selection” assumption.</p><br>
+        <p><strong>(Choice B)</strong> This answer choice violates the “no migration,” commonly referred to as no “gene flow,” assumption.</p><br>
+        <p><strong>(Choice C)</strong> This answer choice violates the random mating assumption and the large population assumption. For instance, knowing the global prevalence of hemophilia B (“the royal disease”) during the 19th century would not enable one to use Hardy Weinberg to account for the high prevalence of this disease in royal European families.</p>`
     },
     {
         id: 5,
-        subject: 'Physiology',
-        chapter: 'General Principles',
-        section: 2,
-        question: 'How many books are in the Harry Potter Series?',
+        subject: 'Immunology',
+        chapter: 'Basic Immunology',
+        section: 11,
+        question: 'A 18-month old boy is brought to the physician for recurrent abscesses present on his face and scalp. In addition, he has also had multiple episodes of sinusitis and otitis that have been treated with antibiotics, as well as episodes of diffuse eczema several weeks after he was born. The mother says her pregnancy and delivery were uncomplicated, but the delivering physician had noted a broad nasal bridge. Further karyotyping revealed no abnormalities. Vital signs are within normal limits. Physical examination of the abscesses reveals that they are cold and lack erythema. Laboratory testing is performed and reveals elevated levels of IgE and eosinophils. Which of the following cell types is likely deficient in this patient?',
         image: null,
-        choices: ['7', '8', '9', '10'],
-        correctAnswer: '7',
-        correctAnswerLetter: 'A',
+        choices: ['B-cells', 'Treg cells', 'Th17 cells', 'Neutrophils'],
+        correctAnswer: 'Th17 cells',
+        correctAnswerLetter: 'C',
         percentageCorrect: '67%',
         explanationImage: null,
-        explanation: 'She wrote 7 books'
+        explanation: `<div class="explanation-content-text">
+        <p>This young boy is presenting with recurrent infections, cold abscesses, facial dysmorphism, eczema, and elevated serum IgE levels; this is likely indicative of hyperimmunoglobulin E syndrome, also known as Job syndrome. Job syndrome is due to a mutation in STAT3, which results in a deficiency of Th17 cells <strong>(Choice C)</strong>. Th17 cells are a subset of T helper cells that secrete IL-17. IL-17 plays a vital role in neutrophil and macrophage recruitment to the site of infection. Susceptibility to infection is due to the deficiency of Th17 cells, which results in impaired neutrophil proliferation and chemotaxis, decreased inflammation, and increased susceptibility to Candida and bacterial infections. The lack of neutrophils at sites of infections explain the presence of cold abscesses, lacking warmth and erythema, since neutrophils normally secrete inflammatory cytokines.</p><br>
+        <p><strong>(Choice A)</strong> B-cells fail to develop in X-linked (Bruton) agammaglobulinemia. This is caused by a defect in the gene BTK and results in no B-cell maturation. Although these patients also have recurrent bacterial and enteroviral infections, this patient\’s other symptoms of eczema and cold skin abscesses suggest a different immunodeficiency.</p><br>
+        <p><strong>(Choice B)</strong> A dysfunction in the regulatory T-cell lineage can lead to a condition known as immune dysregulation, polyendocrinopathy, enteropathy, X-linked (IPEX) syndrome. The loss of Treg cells leads to autoimmunity as a result of disordered tolerance to self-antigens. These patients may also present with recurrent infections and eczema, but the cold abscesses seen in this patient suggest a different immunodeficiency. </p><br>
+        <p><strong>(Choice D)</strong> Neutrophil deficiency, or neutropenia, can be seen in various conditions, such as bone marrow damage, and in certain viral infections. Chediak-Higashi is a specific immunodeficiency that causes pancytopenia, and can result in neutropenia. These patients typically present with recurrent infections, progressive neurodegeneration, and a characteristic albinism.</p>`
     },
     {
         id: 6,
-        subject: 'Physiology',
-        chapter: 'General Principles',
+        subject: 'Embryology',
+        chapter: 'Nephrology',
         section: 2,
-        question: 'What is the capital of Utah?',
+        question: 'A 2-week-old newborn male is seen at the hospital with palpable masses on both sides of his abdomen. Ultrasound shows a thickened bladder wall, enlarged kidneys, and dilated ureters that are filled with fluid. He has slight facial flatness in the region of the left forehead, clubbed feet, and a history of respiratory distress as a newborn. What is the most likely underlying cause of his condition?',
         image: null,
-        choices: ['Salt Lake City', 'Nashville', 'Boise', 'Bountiful'],
-        correctAnswer: 'Salt Lake City',
-        correctAnswerLetter: 'A',
-        percentageCorrect: '82%',
-        explanationImage: null,
-        explanation: 'It is simple geography.'
+        choices: ['Duplex collecting system', 'Multicystic dysplastic kidney', 'Polycystic kidney disease', 'Posterior urethral valves'],
+        correctAnswer: 'Posterior urethral valves',
+        correctAnswerLetter: 'D',
+        percentageCorrect: '66%',
+        explanationImage: 'Assets/answerImage4.png',
+        explanation: `<div class="explanation-image-container">
+        <img src="${'Assets/answerImage4.png'}" alt="explanation-image">
+    </div>
+    <div class="explanation-content-text">
+        <p>This newborn is likely suffering from the presence of posterior urethral valves. The newborn is male, and the ultrasound shows the key signs of the presence of posterior valves - this causes outflow obstruction which leads to a hypertrophied, thickened bladder wall, and hydronephrosis, as indicated by the enlarged kidneys and dilated ureters filled with fluid. Further, there is evidence that the patient developed Potter syndrome as indicated by the facial abnormalities, the clubbed feet, and the respiratory distress  which indicates likely pulmonary hypoplasia. Recall that posterior urethral valves <strong>(Choice C)</strong> can obstruct flow of urine cause bladder wall thickening hydronephrosis and lead to oligohydramnios and without enough amniotic fluid, the fetus can be compressed leading to potter syndrome which includes the visual abnormalities and pulmonary hypoplasia which is present in our patient.</p><br>
+        <p><strong>(Choice A)</strong> Duplex collecting systems wouldn\’t lead to potter syndrome since its a unilateral defect. Plus, there is no reason why a duplex collecting system would cause bladder wall hypertrophy</p><br>
+        <p><strong>(Choice B)</strong> Although this can be a bilateral issue and lead to potter syndrome the problem is cysts directly causing nonfunctional kidneys so you wouldn\’t get hydronephrosis or bladder wall hypertrophy.</p><br>
+        <p><strong>(Choice C)</strong> This is wrong for the same reasons as choice B.</p>`
     },
     
 ];
 
-const markFlagContainer = document.querySelector('.mark-flag-container')
-const flagCheckboxInput = document.querySelector('.flag-checkbox-input')
-const formEl = document.querySelector('form')
-const showAnswerBtn = document.querySelector('.show-answer-button')
-const nextBtns = document.querySelectorAll('.next-button');
-const previousBtn = document.querySelector('.previous-container')
-const questionVignette = document.querySelector('.question-vignette')
-const questionChoicesForm = document.querySelector('.question-choices-form')
-const questionChoicesNoButton = document.querySelector('.question-choices-no-button')
-const preloader = document.querySelector('.preloader')
-const currentItemQuestionNumber = document.querySelector('.current-item-question-number')
-const totalItemQuestionNumber = document.querySelector('.total-item-question-number')
-const navParent = document.querySelector('.question-nav-container')
-const questionChoicesNoBtn = document.querySelector('.question-choices-no-button')
-const briefExplanationContainer = document.querySelector('.brief-explanation-container')
-const explanationContentContainer = document.querySelector('.explanation-content-container')
-const explanationContent = document.querySelector('.explanation-content')
-const explanationReference = document.querySelector('.explanation-reference')
-const copyrightInfo = document.querySelector('.copyright-info')
-const totalBlockTime = document.querySelector('.time')
+const labArray = [
+        'Serum - Alanine aminotransferase (ALT)', 'Serum - Aspartate aminotransferase (AST)', 'Serum - Alkaline phosphatase', 'Serum - Amylase', 'CSF - Cell count', 'CSF - Chloride', 'CSF - Gamma globulin', 'CSF - Glucose', 'Hematologic - Erythrocyte count', 'Hematologic - Male', 'Hematologic - Female', 'Hematologic - Chloride', 'Hematologic - Gamma globulin', 'Hematologic - Glucose', 'Urine - Calcium', 'Urine - Creatinine clearance', 'Urine - Male', 'Urine - Female', 'Urine - Osmolality', 'Urine - Oxalate'
+]
 
-let currentQuestionIndex = 0
-let previousQuestionIndex 
-let score = 0
-       
+class Calculator {
+    constructor() {
+
+    }
+    
+    allClear() {
+        currentOperand.innerText = ''
+        previousOperand.innerText = ''
+    }
+
+    compute() {
+        let endIndex = previousOperand.innerText.length
+        let operandValue = previousOperand.innerText.slice(endIndex - 1, endIndex)
+        let updatedPreviousOperand = previousOperand.innerText.slice(0, endIndex - 1)
+        let previousOperandNum =  parseFloat(updatedPreviousOperand)
+        let currentOperandNum = parseFloat(currentOperand.innerText)
+        let product 
+
+        if (operandValue == 'x') {
+            product = previousOperandNum * currentOperandNum
+            currentOperand.innerText = product
+            previousOperand.innerText = `${previousOperandNum} x ${currentOperandNum}`
+        } else if (operandValue == '÷') {
+            product = previousOperandNum / currentOperandNum
+            currentOperand.innerText = product
+            previousOperand.innerText = `${previousOperandNum} / ${currentOperandNum}`
+        } else if (operandValue == '-') {
+            product = previousOperandNum - currentOperandNum
+            currentOperand.innerText = product
+            previousOperand.innerText = `${previousOperandNum} - ${currentOperandNum}`
+        } else if (operandValue == '+') {
+            product = previousOperandNum + currentOperandNum
+            currentOperand.innerText = product
+            previousOperand.innerText = `${previousOperandNum} + ${currentOperandNum}`
+        }        
+    }
+
+    updateCurrentDisplay(btn) {
+        currentOperand.innerText += btn
+    }
+
+    updatePreviousDisplay(operation) {
+        previousOperand.innerText = `${currentOperand.innerText} ${operation}`
+        currentOperand.innerText = ''
+    }
+}
 class QuestionBank {
     constructor() {
 
@@ -351,6 +462,178 @@ class QuestionBank {
         copyrightInfo.innerHTML = `<p>Copyright &#169; Physeo. All rights reserved.</p>`
     }
 
+    displaySerumLabs() {
+        labContentEl.innerHTML = `
+        <div class="lab-content-subtitle-container">
+                        <h3>Serum</h3>
+                        <h3>Reference Range</h3>
+                    </div>
+                    <div class="lab-content-general-div">
+                        <div class="lab-name">
+                            <h4>Alanine aminotransferase (ALT)</h4>
+                        </div>
+                        <div class="lab-value">
+                            <h4>10-40 U/L</h4>
+                        </div>
+                    </div>
+                    <div class="lab-content-general-div">
+                        <div class="lab-name">
+                            <h4>Aspartate aminotransferase (AST)</h4>
+                        </div>
+                        <div class="lab-value">
+                            <h4>12-38 U/L</h4>
+                        </div>
+                    </div>
+                    <div class="lab-content-general-div">
+                        <div class="lab-name">
+                            <h4>Alkaline phosphatase</h4>
+                        </div>
+                        <div class="lab-value">
+                            <h4>25-100 U/L</h4>
+                        </div>
+                    </div>
+                    <div class="lab-content-general-div">
+                        <div class="lab-name">
+                            <h4>Amylase</h4>
+                        </div>
+                        <div class="lab-value">
+                            <h4>25-125 U/L</h4>
+                        </div>
+                    </div>
+        `
+    }
+
+    displayCSFLabs() {
+        labContentEl.innerHTML = `
+        <div class="lab-content-subtitle-container">
+                        <h3>Cerebrospinal Fluid</h3>
+                        <h3>Reference Range</h3>
+                </div>
+                <div class="lab-content-general-div">
+                    <div class="lab-name">
+                        <h4>Cell count</h4>
+                    </div>
+                    <div class="lab-value">
+                        <h4>0-5/mm^3</h4>
+                    </div>
+                </div>
+                <div class="lab-content-general-div">
+                    <div class="lab-name">
+                        <h4>Chloride</h4>
+                    </div>
+                    <div class="lab-value">
+                        <h4>118-132 mEq/L</h4>
+                    </div>
+                </div>
+                <div class="lab-content-general-div">
+                    <div class="lab-name">
+                        <h4>Gamma globulin</h4>
+                    </div>
+                    <div class="lab-value">
+                        <h4>3%-12% total proteins</h4>
+                    </div>
+                </div>
+                <div class="lab-content-general-div">
+                    <div class="lab-name">
+                        <h4>Glucose</h4>
+                    </div>
+                    <div class="lab-value">
+                        <h4>40-70 mg/dL</h4>
+                    </div>
+                </div>
+        `
+    }
+
+    displayBloodLabs() {
+        labContentEl.innerHTML = `
+        <div class="lab-content-subtitle-container">
+                    <h3>Hematologic</h3>
+                    <h3>Reference Range</h3>
+                </div>
+                <div class="lab-content-general-div">
+                    <div class="lab-name">
+                        <h4>Erythrocyte count</h4>
+                        <h4>Male</h4>
+                        <h4>Female</h4>
+                    </div>
+                    <div class="lab-value">
+                        <br>
+                        <h4>4.3-5.9 million/mm^3</h4>
+                        <h4>3.5-5.5 million/mm^3</h4>
+                    </div>
+                </div>
+                <div class="lab-content-general-div">
+                    <div class="lab-name">
+                        <h4>Chloride</h4>
+                    </div>
+                    <div class="lab-value">
+                        <h4>118-132 mEq/L</h4>
+                    </div>
+                </div>
+                <div class="lab-content-general-div">
+                    <div class="lab-name">
+                        <h4>Gamma globulin</h4>
+                    </div>
+                    <div class="lab-value">
+                        <h4>3%-12% total proteins</h4>
+                    </div>
+                </div>
+                <div class="lab-content-general-div">
+                    <div class="lab-name">
+                        <h4>Glucose</h4>
+                    </div>
+                    <div class="lab-value">
+                        <h4>40-70 mg/dL</h4>
+                    </div>
+                </div>
+        `
+    }
+
+    displayUrineLabs() {
+        labContentEl.innerHTML = `
+        <div class="lab-content-subtitle-container">
+                    <h3>Urine</h3>
+                    <h3>Reference Range</h3>
+                </div>
+                <div class="lab-content-general-div">
+                    <div class="lab-name">
+                        <h4>Calcium</h4>
+                    </div>
+                    <div class="lab-value">
+                        <h4>100-300 mg/24 h</h4>
+                    </div>
+                </div>
+                <div class="lab-content-general-div">
+                    <div class="lab-name">
+                        <h4>Creatinine clearance</h4>
+                        <h4>Male</h4>
+                        <h4>Female</h4>
+                    </div>
+                    <div class="lab-value">
+                        <br>
+                        <h4>94-137 mL/min</h4>
+                        <h4>88-128 mL/min</h4>
+                    </div>
+                </div>
+                <div class="lab-content-general-div">
+                    <div class="lab-name">
+                        <h4>Osmolality</h4>
+                    </div>
+                    <div class="lab-value">
+                        <h4>50-1200 mOsmol/kg H2O</h4>
+                    </div>
+                </div>
+                <div class="lab-content-general-div">
+                    <div class="lab-name">
+                        <h4>Oxalate</h4>
+                    </div>
+                    <div class="lab-value">
+                        <h4>8-40 microgram/mL</h4>
+                    </div>
+                </div>
+        `
+    }
+
     //hide the explanation to the question
     hideExplanation() {
         explanationContent.innerHTML = ''
@@ -432,10 +715,10 @@ class QuestionBank {
     }
 
     //update flag checkbox radio input in header if applicable
-    updateFlag() {
-        if (navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
+    updateFlag() {        
+        if (navParent.children[currentQuestionIndex].children[2].children[0].classList.contains('hide')) {
             flagCheckboxInput.checked = false
-        } else if (!navParent.children[currentQuestionIndex].children[2].classList.contains('hide')) {
+        } else if (!navParent.children[currentQuestionIndex].children[2].children[0].classList.contains('hide')) {
             flagCheckboxInput.checked = true
         }
     }
@@ -443,15 +726,28 @@ class QuestionBank {
     //highlight current nav item
     //return default styling of previous nav item
     updateNav() {
-        navParent.children[currentQuestionIndex].style.backgroundColor = '#004975'
-        navParent.children[currentQuestionIndex].style.color = 'white'
-        if ((previousQuestionIndex + 1) % 2 == 0) {
-            navParent.children[previousQuestionIndex].style.backgroundColor = 'white'
-            navParent.children[previousQuestionIndex].style.color = 'black'
+        if (reversedColor === false) {
+            navParent.children[currentQuestionIndex].style.backgroundColor = '#004975'
+            navParent.children[currentQuestionIndex].style.color = 'white'
+            if ((previousQuestionIndex + 1) % 2 == 0) {
+                navParent.children[previousQuestionIndex].style.backgroundColor = 'white'
+                navParent.children[previousQuestionIndex].style.color = 'black'
+            } else {
+                navParent.children[previousQuestionIndex].style.backgroundColor = '#e2e2e2'
+                navParent.children[previousQuestionIndex].style.color = 'black'
+            }
         } else {
-            navParent.children[previousQuestionIndex].style.backgroundColor = '#e2e2e2'
-            navParent.children[previousQuestionIndex].style.color = 'black'
+            navParent.children[currentQuestionIndex].style.backgroundColor = '#a1ddfe'
+            navParent.children[currentQuestionIndex].style.color = 'white'
+            if ((previousQuestionIndex + 1) % 2 == 0) {
+                navParent.children[previousQuestionIndex].style.backgroundColor = 'black'
+                navParent.children[previousQuestionIndex].style.color = 'white'
+            } else {
+                navParent.children[previousQuestionIndex].style.backgroundColor = '#717172'
+                navParent.children[previousQuestionIndex].style.color = 'white'
+            }
         }
+        
     }
 
     //select inputs from the question (eg, previous question) just before displaying the new question
@@ -516,8 +812,107 @@ class QuestionBank {
             }
         }
     }
-}
 
+    clearLabHighlighting() {
+        urineBtn.style.backgroundColor = '#d9d9d9'
+        serumBtn.style.backgroundColor = '#d9d9d9'
+        csfBtn.style.backgroundColor = '#d9d9d9'
+        bloodBtn.style.backgroundColor = '#d9d9d9'
+        labSearch.value = ''
+    }
+
+    renderResults(result) {
+        result.forEach(labItem => {
+            if (labItem.includes('Urine')) {
+                urineBtn.style.backgroundColor = 'yellow'
+            } else if (labItem.includes('Serum')) {
+                serumBtn.style.backgroundColor = 'yellow'
+            } else if (labItem.includes('CSF')) {
+                csfBtn.style.backgroundColor = 'yellow'
+            } else if (labItem.includes('Hematologic')) {
+                bloodBtn.style.backgroundColor = 'yellow'
+            }
+        })
+    }
+
+    reverseColor() {
+        if (reversedColor === false) {
+            rootEl.style.setProperty('--clr-white', 'black')
+            rootEl.style.setProperty('--clr-black', 'white')
+            rootEl.style.setProperty('--clr-primary-text', '#fcfcfc')
+            rootEl.style.setProperty('--clr-secondary-text', 'black')
+            rootEl.style.setProperty('--clr-nav-odd', '#444444')
+            rootEl.style.setProperty('--clr-secondary', '#444444')
+            rootEl.style.setProperty('--clr-mainBG', 'black')
+            rootEl.style.setProperty('--clr-secondBG', 'black')
+            rootEl.style.setProperty('--clr-gray', 'white')
+            rootEl.style.setProperty('--clr-light-gray', 'white')
+            rootEl.style.setProperty('--clr-box-shadow', 'black')
+            rootEl.style.setProperty('--clr-lab-content', 'gray')
+            rootEl.style.setProperty('--clr-brief-explanation', '#717172')
+            reversedColor = true
+        } else {
+            rootEl.style.setProperty('--clr-white', 'white')
+            rootEl.style.setProperty('--clr-black', 'black')
+            rootEl.style.setProperty('--clr-primary-text', 'black')
+            rootEl.style.setProperty('--clr-secondary-text', '#fcfcfc')
+            rootEl.style.setProperty('--clr-nav-odd', '#e2e2e2')
+            rootEl.style.setProperty('--clr-secondary', '#004975')
+            rootEl.style.setProperty('--clr-mainBG', '#d7dced')
+            rootEl.style.setProperty('--clr-secondBG', '#fcfcfc')
+            rootEl.style.setProperty('--clr-gray', '#717172')
+            rootEl.style.setProperty('--clr-light-gray', '#D3D3D3')
+            rootEl.style.setProperty('--clr-box-shadow', '#4783bd')
+            rootEl.style.setProperty('--clr-lab-content', '#d7dcec')
+            rootEl.style.setProperty('--clr-brief-explanation', 'transparent')
+            reversedColor = false
+        }
+    }
+
+    adjustNavColors () {
+        if (reversedColor === false) {
+            for (let i = 0; i < navParent.children.length; i++) {
+                let eachDiv = navParent.children[i]
+                if (eachDiv.dataset.number % 2 == 0) {
+                    eachDiv.style.backgroundColor = 'white'
+                    eachDiv.style.color = 'black'
+                } else {
+                    eachDiv.style.backgroundColor = '#e2e2e2'
+                    eachDiv.style.color = 'black'
+                }
+            }
+            
+            navParent.children[currentQuestionIndex].style.backgroundColor = '#004975'
+            navParent.children[currentQuestionIndex].style.color = 'white'
+        } else {
+            for (let i = 0; i < navParent.children.length; i++) {
+                let eachDiv = navParent.children[i]
+                if (eachDiv.dataset.number % 2 == 0) {
+                    eachDiv.style.backgroundColor = 'black'
+                    eachDiv.style.color = 'white'
+                } else {
+                    eachDiv.style.backgroundColor = '#717172'
+                    eachDiv.style.color = 'white'
+                }
+            }
+            
+            navParent.children[currentQuestionIndex].style.backgroundColor = '#a1ddfe'
+        }
+    }
+
+    checkIfExamComplete() {
+        let allBullets = navParent.querySelectorAll('.question-number span:nth-child(1)')
+        let bulletsArray = Array.from(allBullets)
+
+        function isHidden(el) {
+            return el.style.visibility == 'hidden'
+        }
+
+        if (bulletsArray.every(isHidden) === true) {
+            examFinished = true
+        }
+    }
+}
 class trackTotalTime {
     constructor(parentEl) {
         parentEl.innerHTML = trackTotalTime.displayMainTimer()
@@ -570,7 +965,6 @@ class trackTotalTime {
         `
     }
 }
-
 class trackQuestionTime {
     constructor() {
         this.interval = null
@@ -611,13 +1005,10 @@ class trackQuestionTime {
     trackTime() {        
         this.hours = Math.floor((this.totalTime % this.day) / this.hour)
         this.minutes = Math.floor((this.totalTime % this.hour) / this.minute)
-        this.seconds = Math.floor((this.totalTime % this.minute) / this.second)     
-
-        //console.log(this.hours.toString().padStart(2, '0'), this.minutes.toString().padStart(2, '0'), this.seconds.toString().padStart(2, '0')) 
+        this.seconds = Math.floor((this.totalTime % this.minute) / this.second)    
 
         showAnswerBtn.addEventListener('click', () => {
             this.displayTime(this.seconds, this.minutes, this.hours)
-            
             //set question time to session storage
             sessionStorage.setItem(`${200 + parseInt(currentQuestionIndex)}`, `${this.hours.toString().padStart(2, '0')}:${this.minutes.toString().padStart(2, '0')}:${this.seconds.toString().padStart(2, '0')}`)
         })        
@@ -631,9 +1022,10 @@ class trackQuestionTime {
     }
 }
 
-let questionTimeTracker = new trackQuestionTime()
-let totalTimeTracker = new trackTotalTime(document.querySelector('.time'))
-let qbank = new QuestionBank
+const calculator = new Calculator
+const questionTimeTracker = new trackQuestionTime()
+const totalTimeTracker = new trackTotalTime(document.querySelector('.time'))
+const qbank = new QuestionBank
 
 //preloader and initial load event
 window.addEventListener('load', () => {
@@ -648,27 +1040,27 @@ window.addEventListener('load', () => {
     qbank.sessionStorageRemoveBullets()
     qbank.strikeAnswerChoice()
     qbank.preventChangingAnswer()
+    totalItemQuestionNumber.innerHTML = navParent.children.length
 })
 
 /*========== MOVE TO NEXT QUESTION ==========*/
 nextBtns.forEach(button => {
     button.addEventListener('click', () => {
+        console.log(score)
+        // prevent user from cycling beyond the number of questions
+        if (currentQuestionIndex + 2 >= navParent.children.length) {
+            currentQuestionIndex = navParent.children.length - 2
+        }
+
         qbank.hideExplanation()
+        if (!notesContentContainer.classList.contains('hide')) {
+            notesContentContainer.classList.add('hide')
+            notesText.value = ''
+        }
 
         previousQuestionIndex = currentQuestionIndex
         currentQuestionIndex += 1
-        currentItemQuestionNumber.innerHTML = currentQuestionIndex + 1      
-
-        //search session storage for existing time on CURRENT question
-        for (let i = 0; i < sessionStorage.length; i++) {
-            let sessionStorageKey = sessionStorage.key(i)
-            let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
-
-            if (sessionStorageKey == 200 + (currentQuestionIndex)) {
-                //there is a saved session storage time (question has been visited already but never answered)
-                let string = sessionStorageValue
-            }
-        }
+        currentItemQuestionNumber.innerHTML = currentQuestionIndex + 1              
 
         qbank.updateNav()
         qbank.saveSelectionInSessionStorage(-1)
@@ -687,32 +1079,51 @@ nextBtns.forEach(button => {
 
 /*========== MOVE TO PREVIOUS QUESTION ==========*/
 previousBtn.addEventListener('click', () => {
+    //prevent user from going below the number of questions
+    if (currentQuestionIndex <= 1) {
+        currentQuestionIndex = 1
+    }
+
     previousQuestionIndex = currentQuestionIndex
+    
     currentQuestionIndex -= 1
-    if (currentQuestionIndex <= 0) {
-        currentQuestionIndex = 0
-    }
-    if (previousQuestionIndex <= 0) {
-        previousQuestionIndex = 0
-    }
 
     currentItemQuestionNumber.innerHTML = currentQuestionIndex + 1
 
     qbank.hideExplanation()
+    if (!notesContentContainer.classList.contains('hide')) {
+        notesContentContainer.classList.add('hide')
+        notesText.value = ''
+    }
     
     //highlight current nav item
-    navParent.children[currentQuestionIndex].style.backgroundColor = '#004975'
-    navParent.children[currentQuestionIndex].style.color = 'white'
-
-    //return default styling of previous nav item
-    if ((previousQuestionIndex + 1) % 2 == 0 && previousQuestionIndex > 0) {
-        navParent.children[previousQuestionIndex].style.backgroundColor = 'white'
-        navParent.children[previousQuestionIndex].style.color = 'black'
-    } else if ((previousQuestionIndex + 1) % 2 !== 0 && previousQuestionIndex > 0) {
-        navParent.children[previousQuestionIndex].style.backgroundColor = '#e2e2e2'
-        navParent.children[previousQuestionIndex].style.color = 'black'
+    if (reversedColor === false) {
+        navParent.children[currentQuestionIndex].style.backgroundColor = '#004975'
+        navParent.children[currentQuestionIndex].style.color = 'white'
+    
+        //return default styling of previous nav item
+        if ((previousQuestionIndex + 1) % 2 == 0 && previousQuestionIndex > 0) {
+            navParent.children[previousQuestionIndex].style.backgroundColor = 'white'
+            navParent.children[previousQuestionIndex].style.color = 'black'
+        } else if ((previousQuestionIndex + 1) % 2 !== 0 && previousQuestionIndex > 0) {
+            navParent.children[previousQuestionIndex].style.backgroundColor = '#e2e2e2'
+            navParent.children[previousQuestionIndex].style.color = 'black'
+        } else {
+            return
+        }
     } else {
-        return
+        navParent.children[currentQuestionIndex].style.backgroundColor = '#a1ddfe'
+        navParent.children[currentQuestionIndex].style.color = 'white'
+    
+        if ((previousQuestionIndex + 1) % 2 == 0 && previousQuestionIndex > 0) {
+            navParent.children[previousQuestionIndex].style.backgroundColor = 'black'
+            navParent.children[previousQuestionIndex].style.color = 'white'
+        } else if ((previousQuestionIndex + 1) % 2 !== 0 && previousQuestionIndex > 0) {
+            navParent.children[previousQuestionIndex].style.backgroundColor = '#717172'
+            navParent.children[previousQuestionIndex].style.color = 'white'
+        } else {
+            return
+        }
     }
 
     qbank.saveSelectionInSessionStorage(1)
@@ -742,21 +1153,41 @@ for (let i = 0; i < navParent.children.length; i++) {
             currentQuestionIndex = targetNumber - 1
 
             qbank.hideExplanation()
+            if (!notesContentContainer.classList.contains('hide')) {
+                notesContentContainer.classList.add('hide')
+                notesText.value = ''
+            }
 
             //highlight current nav item
-            navParent.children[currentQuestionIndex].style.backgroundColor = '#004975'
-            navParent.children[currentQuestionIndex].style.color = 'white'
+            if (reversedColor === false) {
+                navParent.children[currentQuestionIndex].style.backgroundColor = '#004975'
+                navParent.children[currentQuestionIndex].style.color = 'white'
 
             //remove styling for previous nav item
-            if ((previousQuestionIndex + 1) % 2 == 0 && previousQuestionIndex !== currentQuestionIndex) {
-                navParent.children[previousQuestionIndex].style.backgroundColor = 'white'
-                navParent.children[previousQuestionIndex].style.color = 'black'
-            } else if ((previousQuestionIndex + 1) % 2 !== 0 && previousQuestionIndex !== currentQuestionIndex) {
-                navParent.children[previousQuestionIndex].style.backgroundColor = '#e2e2e2'
-                navParent.children[previousQuestionIndex].style.color = 'black'
+                if ((previousQuestionIndex + 1) % 2 == 0 && previousQuestionIndex !== currentQuestionIndex) {
+                    navParent.children[previousQuestionIndex].style.backgroundColor = 'white'
+                    navParent.children[previousQuestionIndex].style.color = 'black'
+                } else if ((previousQuestionIndex + 1) % 2 !== 0 && previousQuestionIndex !== currentQuestionIndex) {
+                    navParent.children[previousQuestionIndex].style.backgroundColor = '#e2e2e2'
+                    navParent.children[previousQuestionIndex].style.color = 'black'
+                } else {
+                    return
+                }
             } else {
-                return
-            }
+                navParent.children[currentQuestionIndex].style.backgroundColor = '#a1ddfe'
+                navParent.children[currentQuestionIndex].style.color = 'white'
+
+                if ((previousQuestionIndex + 1) % 2 == 0 && previousQuestionIndex !== currentQuestionIndex) {
+                    navParent.children[previousQuestionIndex].style.backgroundColor = 'black'
+                    navParent.children[previousQuestionIndex].style.color = 'white'
+                } else if ((previousQuestionIndex + 1) % 2 !== 0 && previousQuestionIndex !== currentQuestionIndex) {
+                    navParent.children[previousQuestionIndex].style.backgroundColor = '#717172'
+                    navParent.children[previousQuestionIndex].style.color = 'white'
+                } else {
+                    return
+                }
+            } 
+            
 
             qbank.displayQuestion()
             questionTimeTracker.resetTimer()
@@ -773,27 +1204,6 @@ for (let i = 0; i < navParent.children.length; i++) {
             qbank.strikeAnswerChoice()           
         })
     }
-
-//mark flag on click 
-markFlagContainer.addEventListener('click', () => {
-    if (flagCheckboxInput.checked == true) {
-        flagCheckboxInput.checked = false
-        
-        //update check mark in nav
-        navParent.children[currentQuestionIndex].children[2].classList.toggle('hide')
-
-    } else {
-        //update check mark in header
-        flagCheckboxInput.checked = true
-
-        //update check mark in nav
-        navParent.children[currentQuestionIndex].children[2].classList.toggle('hide')
-    }
-})
-
-formEl.addEventListener('submit', (e) => {
-    e.preventDefault()
-})
 
 //show stats and explanations when clicking 'show answer' button
 
@@ -835,3 +1245,177 @@ formEl.addEventListener('submit', (e) => {
     
     qbank.preventChangingAnswer()
  })
+
+ //mark flag on click 
+markFlagContainer.addEventListener('click', () => {
+    if (flagCheckboxInput.checked == true) {
+        flagCheckboxInput.checked = false
+        
+        //update check mark in nav
+        navParent.children[currentQuestionIndex].children[2].children[0].classList.toggle('hide')
+
+    } else {
+        //update check mark in header
+        flagCheckboxInput.checked = true
+
+        //update check mark in nav
+        navParent.children[currentQuestionIndex].children[2].children[0].classList.toggle('hide')
+    }
+})
+
+formEl.addEventListener('submit', (e) => {
+    e.preventDefault()
+})
+
+labFilterButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+        let category = e.target.dataset.name
+        if (category === 'Serum') {
+            qbank.displaySerumLabs()
+        } else if (category === 'CSF') {
+            qbank.displayCSFLabs()
+        } else if (category === 'Blood') {
+            qbank.displayBloodLabs()
+        } else if (category === 'Urine') {
+            qbank.displayUrineLabs()
+        }
+    })
+})
+
+labBtn.addEventListener('click', () => {
+    labContentContainer.classList.toggle('hide')
+    qbank.clearLabHighlighting()
+})
+
+labSearchButton.addEventListener('click', () => {
+    urineBtn.style.backgroundColor = '#d9d9d9'
+    serumBtn.style.backgroundColor = '#d9d9d9'
+    csfBtn.style.backgroundColor = '#d9d9d9'
+    bloodBtn.style.backgroundColor = '#d9d9d9'
+
+    let results = []
+    let searchInput = labSearch.value.toLowerCase()
+    if (searchInput.length > 0) {
+        results = labArray.filter(item => {
+            return item.toLowerCase().includes(searchInput)
+        })
+    }
+    qbank.renderResults(results)
+    labSearch.value = ''
+})
+
+calculatorIconBtn.addEventListener('click', () => {
+    calculatorEl.classList.toggle('hide')
+})
+
+allClearBtn.addEventListener('click', () => {
+    calculator.allClear()
+})
+
+operationBtns.forEach(button => {
+    button.addEventListener('click', () => {
+        if (currentOperand.innerText.length <= 0) return
+        if (previousOperand.innerText.includes('x') || previousOperand.innerText.includes('+') || previousOperand.innerText.includes('-') || previousOperand.innerText.includes('÷')) {
+            calculator.compute()
+        }
+        calculator.updatePreviousDisplay(button.innerText)
+    })
+})
+
+numberBtns.forEach(button => {
+    button.addEventListener('click', () => {
+        if (button.innerText === '.' && currentOperand.innerText.includes('.') || currentOperand.innerText.length > 7) {
+            return
+        } else {
+            calculator.updateCurrentDisplay(button.innerText)
+        }
+    })
+})
+
+equalsBtn.addEventListener('click', () => {
+    calculator.compute()
+})
+
+notesIconBtn.addEventListener('click', () => {
+    notesContentContainer.classList.toggle('hide')
+    for (let i = 0; i < sessionStorage.length; i++) {
+        let sessionStorageKey = sessionStorage.key(i)
+        let sessionStorageValue = sessionStorage.getItem(sessionStorageKey)
+
+        if (sessionStorageKey == 300 + currentQuestionIndex) {
+            notesText.value = sessionStorageValue
+        }
+    }
+})
+
+notesSaveBtn.addEventListener('click', () => {
+    sessionStorage.setItem((currentQuestionIndex + 300), notesText.value)
+
+    navParent.children[currentQuestionIndex].children[2].children[1].classList.remove('hide')
+})
+
+notesDeleteBtn.addEventListener('click', () => {
+    sessionStorage.removeItem(currentQuestionIndex + 300)
+    notesText.value = ''
+
+    navParent.children[currentQuestionIndex].children[2].children[1].classList.add('hide')
+})
+
+lockBtn.addEventListener('click', () => {
+    lockModal.classList.toggle('hide')
+})
+
+returnToExamBtn.addEventListener('click', () => {
+    lockModal.classList.add('hide')
+})
+
+unauthorizedBreakBtn.addEventListener('click', () => {
+    unauthorizedBreakModalEl.classList.remove('hide')
+})
+
+unauthBreakReturnToExamBtn.addEventListener('click', () => {
+    unauthorizedBreakModalEl.classList.add('hide')
+    lockModal.classList.add('hide')
+})
+
+reverseColorBtn.addEventListener('click', () => {
+    qbank.reverseColor()
+    qbank.adjustNavColors()
+})
+
+endBlockBtn.addEventListener('click', () => {
+    qbank.checkIfExamComplete()
+    if (examFinished === false) {
+        //show modal warning that exam is incomplete
+        endBlockModalUnfinished.classList.remove('hide')
+
+        //display the number of unanswered items
+        let numAnsweredArray = []
+        let allBullets = navParent.querySelectorAll('.question-number span:nth-child(1)')
+        let bulletsArray = Array.from(allBullets)
+        
+        bulletsArray.forEach(bullet => {         
+            if (bullet.style.visibility == 'hidden') {
+                //answered
+                numAnsweredArray.push('answered')
+            }
+        })
+
+        console.log('before reset array ' + numAnsweredArray)
+
+        numberOfUnansweredItems.innerHTML = navParent.children.length - numAnsweredArray.length
+
+        numAnsweredArray = []
+    } else {
+        //show modal showing that exam is complete
+        endBlockModalFinished.classList.remove('hide')
+    }
+})
+
+remainInBlockUnfinishedBtn.addEventListener('click', () => {
+    endBlockModalUnfinished.classList.add('hide')
+})
+
+remainInBlockFinishedBtn.addEventListener('click', () => {
+    endBlockModalFinished.classList.add('hide')
+})
